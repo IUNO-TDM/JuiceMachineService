@@ -10,9 +10,9 @@ var ProgramLine = require('../model/program_line');
 
 
 //TODO: REMOVE DUMMY DATA
-var DUMMY_DATA = [
-    new Recipe(
-        1,
+var DUMMY_DATA = {
+    Recipe_1: new Recipe(
+        'Recipe_1',
         'Da kommt\'s mir hoch',
         'Wer kommt auf die dumme Idee ein Getränk mit so einem Namen zu trinken?',
         {
@@ -42,8 +42,8 @@ var DUMMY_DATA = [
             new ProgramLine([new ProgramComponent('Luft', 200), new ProgramComponent('Liebe', 200)], ProgramLine.TIMING.SYNCHRONIZED_START, 5)
         ])
     ),
-    new Recipe(
-        2,
+    Recipe_2: new Recipe(
+        'Recipe_2',
         'Da kommt\'s mir hoch',
         'Wer kommt auf die dumme Idee ein Getränk mit so einem Namen zu trinken?',
         {
@@ -73,8 +73,8 @@ var DUMMY_DATA = [
             new ProgramLine([new ProgramComponent('Luft', 200), new ProgramComponent('Liebe', 200)], ProgramLine.TIMING.SYNCHRONIZED_START, 5)
         ])
     ),
-    new Recipe(
-        3,
+    Recipe_3: new Recipe(
+        'Recipe_3',
         'Da kommt\'s mir hoch',
         'Wer kommt auf die dumme Idee ein Getränk mit so einem Namen zu trinken?',
         {
@@ -104,14 +104,31 @@ var DUMMY_DATA = [
             new ProgramLine([new ProgramComponent('Luft', 200), new ProgramComponent('Liebe', 200)], ProgramLine.TIMING.SYNCHRONIZED_START, 5)
         ])
     )
-];
+};
 
 var self = {};
 
-self.getAllRecipesForConfiguration = function getAllRecipesForConfiguration(configuration, callback) {
+self.getAllRecipesForConfiguration = function (configuration, callback) {
 
-    callback(null, DUMMY_DATA);
+
+    //TODO: Retrieve recipes from the market place core
+
+    if (typeof(callback) == 'function') {
+        var recipes = [];
+        Object.keys(DUMMY_DATA).forEach(function(recipeId) {
+            recipes.push(DUMMY_DATA[recipeId]);
+        });
+        callback(null, recipes);
+    }
 };
 
+
+self.getRecipeForId = function (recipeId, callback) {
+    //TODO: Retrieve single recipe from market place core
+
+    if (typeof(callback) == 'function') {
+        callback(null, DUMMY_DATA[recipeId]);
+    }
+};
 
 module.exports = self;

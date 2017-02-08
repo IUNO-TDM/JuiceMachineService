@@ -6,6 +6,7 @@
 
 function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productId, program) {
 
+
     this.id = id;
     this.title = title;
     this.description = description;
@@ -21,6 +22,23 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.program = program;
 
 }
-
+// class methods
+Recipe.prototype.CreateRecipeFromJSON = function(jsonData) {
+    return new Recipe(
+        jsonData.id,
+        jsonData.title,
+        jsonData.description,
+        jsonData.licencefee,
+        jsonData.thumbnail,
+        jsonData.imageRef,
+        jsonData.authorId,
+        jsonData.createdAt,
+        jsonData.updatedAt,
+        jsonData.rating,
+        jsonData.retailPrice,
+        jsonData.productId,
+        jsonData.program
+    );
+};
 
 module.exports = Recipe;

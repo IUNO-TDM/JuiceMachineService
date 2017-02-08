@@ -29,4 +29,24 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/:id', function (req, res, next) {
+    logger.log(req);
+    marketplaceCore.getRecipeForId(req.params['id'], function(err, recipe) {
+        if(err) {
+            logger.err(err);
+
+            res.sendStatus(500);
+            return;
+        }
+
+        if (!recipe || !Object.keys(recipe).length) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.json(recipe);
+    });
+
+});
+
 module.exports = router;
