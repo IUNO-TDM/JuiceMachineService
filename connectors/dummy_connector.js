@@ -1,16 +1,12 @@
 /**
- * Created by beuttlerma on 07.02.17.
+ * Created by beuttlerma on 08.02.17.
  */
-
-
 var Recipe = require('../model/recipe');
 var Program = require('../model/program');
 var ProgramComponent = require('../model/program_component');
 var ProgramLine = require('../model/program_line');
 
-
-//TODO: REMOVE DUMMY DATA
-var DUMMY_DATA = {
+var recipeStorage = {
     Recipe_1: new Recipe(
         'Recipe_1',
         'Da kommt\'s mir hoch',
@@ -106,29 +102,43 @@ var DUMMY_DATA = {
     )
 };
 
+var offerStorage = {};
+
+
 var self = {};
 
 self.getAllRecipesForConfiguration = function (configuration, callback) {
-
-
-    //TODO: Retrieve recipes from the market place core
+    var recipes = [];
+    Object.keys(recipeStorage).forEach(function (recipeId) {
+        recipes.push(recipeStorage[recipeId]);
+    });
 
     if (typeof(callback) == 'function') {
-        var recipes = [];
-        Object.keys(DUMMY_DATA).forEach(function(recipeId) {
-            recipes.push(DUMMY_DATA[recipeId]);
-        });
+
         callback(null, recipes);
     }
 };
 
-
 self.getRecipeForId = function (recipeId, callback) {
-    //TODO: Retrieve single recipe from market place core
-
     if (typeof(callback) == 'function') {
-        callback(null, DUMMY_DATA[recipeId]);
+        callback(null, recipeStorage[recipeId]);
     }
 };
+
+self.placeOfferRequest = function (request, callback) {
+
+    var offer = {
+        id: 'OFFER_' + Object.keys(offerStorage).length,
+        request: request,
+        paymentRequestBIP70: ''
+    };
+
+    offerStorage[offer.id] = offer;
+
+    if (typeof (callback) == 'function') {
+        callback(null, offer.id);
+    }
+};
+
 
 module.exports = self;
