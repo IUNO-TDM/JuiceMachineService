@@ -1,6 +1,7 @@
 /**
  * Created by beuttlerma on 09.02.17.
  */
+
 var RecipeQuerySchema = {
     type: 'object',
     properties: {
