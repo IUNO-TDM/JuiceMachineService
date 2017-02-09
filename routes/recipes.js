@@ -5,9 +5,10 @@ var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
 var marketplaceCore = require('../connectors/dummy_connector');
+var validate = require('express-jsonschema').validate;
 
 
-router.get('/', function (req, res, next) {
+router.get('/', validate({query: require('../schema/recipe_query_schema')}), function (req, res, next) {
 
     logger.debug(req.query);
 
@@ -20,22 +21,20 @@ router.get('/', function (req, res, next) {
     marketplaceCore.getAllRecipesForConfiguration(searchConfig, function (err, recipes) {
 
         if (err) {
-            logger.err(err);
-
-            res.sendStatus(500);
-        } else {
-            res.json(recipes);
+            next(err);
+            return;
         }
+
+        logger.debug(recipes);
+        res.json(recipes);
     });
 });
 
 router.get('/:id', function (req, res, next) {
     logger.log(req);
-    marketplaceCore.getRecipeForId(req.params['id'], function(err, recipe) {
-        if(err) {
-            logger.err(err);
-
-            res.sendStatus(500);
+    marketplaceCore.getRecipeForId(req.params['id'], function (err, recipe) {
+        if (err) {
+            next(err);
             return;
         }
 

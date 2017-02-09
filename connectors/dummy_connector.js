@@ -115,7 +115,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
 
     if (typeof(callback) == 'function') {
 
-        callback(null, recipes);
+        callback(null, JSON.stringify(recipes));
     }
 };
 
@@ -164,10 +164,11 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
     if (!offer) {
         if (typeof(callback) == 'function') {
             callback({
-                msg: 'Offer not found',
+                message: 'Offer not found',
                 status: 404
             });
         }
+        return;
     }
 
     offer.payment = payment;

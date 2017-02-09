@@ -7,23 +7,17 @@ var router = express.Router();
 var logger = require('../global/logger');
 var marketplaceCore = require('../connectors/dummy_connector');
 var helper = require('../services/helper_service');
+var validate = require('express-jsonschema').validate;
 
-router.post('/', function (req, res, next) {
-    // Validation
-    if (!req.body || !helper.isObject(req.body) || !Object.keys(req.body).length) {
-        res.status(400).send('Missing request object in http body.');
-        return
-    }
+
+router.post('/', validate({body: require('../schema/offer_request_schema')}), function (req, res, next) {
     var data = req.body;
 
     logger.debug(data);
 
-    marketplaceCore.createOfferForRequest(data, function(err, offer) {
+    marketplaceCore.createOfferForRequest(data, function (err, offer) {
         if (err) {
-            logger.err(err);
-
-            res.sendStatus(500);
-
+            next(err);
             return;
         }
 
@@ -32,12 +26,11 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/:id', function (req, res, next) {
-    logger.log(req);
-    marketplaceCore.getOfferForId(req.params['id'], function(err, offer) {
-        if(err) {
-            logger.err(err);
+    logger.debug(req);
 
-            res.sendStatus(500);
+    marketplaceCore.getOfferForId(req.params['id'], function (err, offer) {
+        if (err) {
+            next(err);
             return;
         }
 
@@ -51,28 +44,15 @@ router.get('/:id', function (req, res, next) {
 
 });
 
-router.post('/:id/payment', function (req, res, next) {
-    // Validation
-    if (!req.body || !helper.isObject(req.body) || !Object.keys(req.body).length) {
-        res.status(400).send('Missing payment object in http body.');
-        return
-    }
+router.post('/:id/payment', validate({body: require('../schema/payment_schema')}) ,function (req, res, next) {
     var data = req.body;
 
     logger.debug(data);
 
-    marketplaceCore.savePaymentForOffer(req.params['id'], data, function(err, offer) {
+    marketplaceCore.savePaymentForOffer(req.params['id'], data, function (err, offer) {
         if (err) {
-            logger.err(err);
+            next(err);
 
-            if (err.status) {
-                res.status(404).send(err.msg);
-
-                return;
-            }
-
-
-            res.sendStatus(500);
             return;
         }
 
