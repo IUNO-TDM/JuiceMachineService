@@ -18,7 +18,7 @@ router.post('/', function (req, res, next) {
 
     logger.debug(data);
 
-    marketplaceCore.getOfferForRequest(data, function(err, offer) {
+    marketplaceCore.createOfferForRequest(data, function(err, offer) {
         if (err) {
             logger.err(err);
 

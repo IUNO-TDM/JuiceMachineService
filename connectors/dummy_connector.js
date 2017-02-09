@@ -125,11 +125,22 @@ self.getRecipeForId = function (recipeId, callback) {
     }
 };
 
-self.getOfferForRequest = function (request, callback) {
+self.createOfferForRequest = function (request, callback) {
 
     var offer = {
         id: 'OFFER_' + Object.keys(offerStorage).length,
-        invoice: {}
+        Invoice: {
+            Expiration: new Date(new Date().getTime() + (2 * 60 * 60 * 1000)).toISOString(),
+            Transfers: [
+                {
+                    Address: 'my1vtAh3gTZEPVmF7TGzzfmsf2wcTVaYUj',
+                    Coin: getRandomIntInclusive(1, 1000)
+                }, {
+                    Address: '1FQ7LNa74kpimsb1g8s5gbG6P67yHb8njj',
+                    Coin: getRandomIntInclusive(1, 1000)
+                }
+            ]
+        }
     };
 
     offerStorage[offer.id] = offer;
@@ -170,3 +181,10 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
 
 
 module.exports = self;
+
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

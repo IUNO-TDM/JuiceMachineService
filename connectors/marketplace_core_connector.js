@@ -21,7 +21,7 @@ self.getRecipeForId = function (recipeId, callback) {
     }
 };
 
-self.getOfferForRequest = function(request, callback) {
+self.createOfferForRequest = function(request, callback) {
     //TODO: Pass the request to the market place core.
 
     if (typeof (callback) == 'function') {
