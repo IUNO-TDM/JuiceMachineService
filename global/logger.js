@@ -45,6 +45,10 @@ winston.addColors(customColors);
 var origLog = logger.log;
 
 logger.log = function (level, msg) {
+    if (!msg) {
+        msg = level;
+        level = 'info';
+    }
     var objType = Object.prototype.toString.call(msg);
     if (objType === '[object Error]') {
         origLog.call(logger, level, msg.toString());

@@ -125,18 +125,46 @@ self.getRecipeForId = function (recipeId, callback) {
     }
 };
 
-self.placeOfferRequest = function (request, callback) {
+self.getOfferForRequest = function (request, callback) {
 
     var offer = {
         id: 'OFFER_' + Object.keys(offerStorage).length,
-        request: request,
-        paymentRequestBIP70: ''
+        invoice: {}
     };
 
     offerStorage[offer.id] = offer;
 
     if (typeof (callback) == 'function') {
-        callback(null, offer.id);
+        callback(null, offer);
+    }
+};
+
+self.getOfferForId = function (offerId, callback) {
+    if (typeof(callback) == 'function') {
+        callback(null, offerStorage[offerId]);
+    }
+};
+
+self.savePaymentForOffer = function (offerId, payment, callback) {
+
+
+    var offer = offerStorage[offerId];
+
+    if (!offer) {
+        if (typeof(callback) == 'function') {
+            callback({
+                msg: 'Offer not found',
+                status: 404
+            });
+        }
+    }
+
+    offer.payment = payment;
+    offerStorage[offerId] = offer;
+
+
+    if (typeof(callback) == 'function') {
+        callback(null);
     }
 };
 
