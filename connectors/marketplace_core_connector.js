@@ -29,4 +29,20 @@ self.createOfferForRequest = function(request, callback) {
     }
 };
 
+self.getOfferForId = function (offerId, callback) {
+    // TODO: Retrieve a offer from the market place core
+
+    if (typeof(callback) == 'function') {
+        callback(null);
+    }
+};
+
+self.savePaymentForOffer = function (offerId, payment, callback) {
+    // TODO: Post a offer to the market place core
+
+    if (typeof(callback) == 'function') {
+        callback(null);
+    }
+};
+
 module.exports = self;
