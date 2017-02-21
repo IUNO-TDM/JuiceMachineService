@@ -26,7 +26,6 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 });
 
 router.get('/:id', function (req, res, next) {
-    logger.debug(req);
 
     marketplaceCore.getOfferForId(req.params['id'], function (err, offer) {
         if (err) {

@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use('/img', express.static(__dirname + '/images'));
 app.use('/recipes', require('./routes/recipes'));
 app.use('/offers', require('./routes/offers'));
+app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

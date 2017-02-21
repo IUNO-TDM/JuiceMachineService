@@ -45,4 +45,12 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
     }
 };
 
+self.getUserForId = function (userId, callback) {
+    // TODO: Retrieve user from market place core.
+
+    if (typeof(callback) == 'function') {
+        callback(null);
+    }
+};
+
 module.exports = self;

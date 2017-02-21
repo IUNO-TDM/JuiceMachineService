@@ -5,6 +5,7 @@ var Recipe = require('../model/recipe');
 var Program = require('../model/program');
 var ProgramComponent = require('../model/program_component');
 var ProgramLine = require('../model/program_line');
+var User = require('../model/user');
 
 var recipeStorage = {
     Recipe_1: new Recipe(
@@ -104,6 +105,9 @@ var recipeStorage = {
 
 var offerStorage = {};
 
+var userStorage = {
+    'Author_42': new User('Author_42', 'Peter', 'Pan', 'Peter@Pan.com', null, null)
+};
 
 var self = {};
 
@@ -177,6 +181,12 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
 
     if (typeof(callback) == 'function') {
         callback(null);
+    }
+};
+
+self.getUserForId = function (userId, callback) {
+    if (typeof(callback) == 'function') {
+        callback(null, userStorage[userId]);
     }
 };
 

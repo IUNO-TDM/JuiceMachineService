@@ -31,7 +31,6 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
 });
 
 router.get('/:id', function (req, res, next) {
-    logger.log(req);
     marketplaceCore.getRecipeForId(req.params['id'], function (err, recipe) {
         if (err) {
             next(err);
