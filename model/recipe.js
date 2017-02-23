@@ -41,4 +41,13 @@ Recipe.prototype.CreateRecipeFromJSON = function(jsonData) {
     );
 };
 
+Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
+    //TODO: IMPLEMENT THIS FUNCTION: Create the recipe object from the actual json data that is returned from the CORE
+    console.warn('MISSING IMPLEMENTATION');
+
+    return new Recipe(
+
+    );
+};
+
 module.exports = Recipe;

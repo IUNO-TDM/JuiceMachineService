@@ -5,6 +5,12 @@
 const self = {
     CONFIG: {
         LOG_LEVEL: 'debug'
+    },
+    HOST_SETTINGS: {
+        MARKETPLACE_CORE: {
+            HOST: 'localhost',
+            PORT: 3001
+        }
     }
 };
 
