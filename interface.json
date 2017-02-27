@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.0.1",
+    "version": "0.1.1",
     "title": "JuiceMachineService"
   },
   "paths": {
@@ -297,12 +297,31 @@
         "id": {
           "type": "string"
         },
-        "request": {
-          "$ref": "#/definitions/Request"
-        },
-        "paymentRequestBIP70": {
+        "invoice": {
+          "$ref": "#/definitions/Invoice"
+        }
+      }
+    },
+    "Invoice" :{
+      "type": "object",
+      "properties": {
+        "expiration": {
           "type": "string",
-          "format": "byte"
+          "format": "date"
+        },
+        "transfers": {
+          "$ref": "#/definitions/Transfer"
+        }
+      }
+    },
+    "Transfer" :{
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "coin": {
+          "type": "number"
         }
       }
     },
