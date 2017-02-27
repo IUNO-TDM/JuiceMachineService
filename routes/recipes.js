@@ -25,7 +25,6 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
             return;
         }
 
-        logger.debug(recipes);
         res.json(recipes);
     });
 });

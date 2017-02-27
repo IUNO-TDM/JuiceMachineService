@@ -10,10 +10,6 @@ var RecipeQuerySchema = {
             format: ' date-time',
             required: false
         },
-        machineType: {
-            type: 'string',
-            required: true
-        },
         ingredients: {
             type: 'array',
             items: {
