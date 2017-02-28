@@ -138,15 +138,15 @@ self.createOfferForRequest = function (request, callback) {
 
     var offer = {
         id: 'OFFER_' + Object.keys(offerStorage).length,
-        Invoice: {
-            Expiration: new Date(new Date().getTime() + (2 * 60 * 60 * 1000)).toISOString(),
-            Transfers: [
+        invoice: {
+            expiration: new Date(new Date().getTime() + (2 * 60 * 60 * 1000)).toISOString(),
+            transfers: [
                 {
-                    Address: 'my1vtAh3gTZEPVmF7TGzzfmsf2wcTVaYUj',
-                    Coin: getRandomIntInclusive(1, 1000)
+                    address: 'my1vtAh3gTZEPVmF7TGzzfmsf2wcTVaYUj',
+                    coin: getRandomIntInclusive(1, 1000)
                 }, {
-                    Address: '1FQ7LNa74kpimsb1g8s5gbG6P67yHb8njj',
-                    Coin: getRandomIntInclusive(1, 1000)
+                    address: '1FQ7LNa74kpimsb1g8s5gbG6P67yHb8njj',
+                    coin: getRandomIntInclusive(1, 1000)
                 }
             ]
         }

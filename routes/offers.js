@@ -21,6 +21,9 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
             return;
         }
 
+        var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        res.set('Location', fullUrl + offer.id);
+        res.status(201);
         res.json(offer);
     });
 });
@@ -48,14 +51,14 @@ router.post('/:id/payment', validate({body: require('../schema/payment_schema')}
 
     logger.debug(data);
 
-    marketplaceCore.savePaymentForOffer(req.params['id'], data, function (err, offer) {
+    marketplaceCore.savePaymentForOffer(req.params['id'], data, function (err) {
         if (err) {
             next(err);
 
             return;
         }
 
-        res.json(offer);
+        res.sendStatus(200);
     });
 });
 
