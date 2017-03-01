@@ -9,70 +9,69 @@ var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
 var Recipe = require('../model/recipe');
 var helper = require('../services/helper_service');
+var request = require('request');
 
-self.getAllRecipesForConfiguration = function (configuration, callback) {
-    //TODO: Retrieve recipes from the market place core
+function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
-    var options = {
-        method: 'GET',
-        host: HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        path: 'techdata',
-        port: HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+    return {
+        method: method,
+        url: protocol + '://' + host + ':' + port + path,
+        qs: qs,
+        json: true,
         headers: {
             'Content-Type': 'application/json'
         }
-    };
+    }
+}
 
-    http.get(options, function (res) {
-        logger.debug("Response: " + res.statusCode);
+self.getAllRecipesForConfiguration = function (configuration, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata',
+        {
+            'userUUID' :  '12345',
+            'ingredients': configuration
+        }
+    );
 
-        //parse the json body
-        var data = '';
-        res.setEncoding('utf8');
-        res.on("data", function (chunk) {
-            data += chunk;
-        });
-        res.on('end', function () {
-            var jsonData = [];
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
 
-            try {
-                jsonData = JSON.parse(data);
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
 
-                if (!helper.isArray(jsonData)) {
-                    callback({
-                        message: 'Expected array from marketplace core. But did get something different.'
-                    });
-                    return;
-                }
-
-                var recipeList = [];
-
-                jsonData.forEach(function(element) {
-                    var recipe = new Recipe().CreateRecipeFromCoreJSON(element);
-                    if (recipe) {
-                        recipeList.add(recipe);
-                    }
-                });
-
-                if (typeof(callback) == 'function') {
-
-                    callback(null, recipeList);
-                }
+                callback(e);
             }
-            catch (ex) {
-                logger.err(ex);
-                logger.err(data);
-                callback(ex);
-            }
+        }
 
+        if (r.statusCode != 200) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
 
+            return;
+        }
 
-        });
-    }).on('error', function (e) {
-        logger.err(e);
+        if (!helper.isArray(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected array. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+        //TODO: Parse json data into objects to validate the content
         if (typeof(callback) == 'function') {
 
-            callback(e);
+            callback(null, jsonData);
         }
     });
 };

@@ -6,6 +6,9 @@ var Program = require('../model/program');
 var ProgramComponent = require('../model/program_component');
 var ProgramLine = require('../model/program_line');
 var User = require('../model/user');
+var Offer = require('../model/offer');
+var Invoice = require('../model/invoice');
+var Transfer = require('../model/transfer');
 
 
 //  -- TEMPLATE START --
@@ -136,21 +139,15 @@ self.getRecipeForId = function (recipeId, callback) {
 
 self.createOfferForRequest = function (request, callback) {
 
-    var offer = {
-        id: 'OFFER_' + Object.keys(offerStorage).length,
-        invoice: {
-            expiration: new Date(new Date().getTime() + (2 * 60 * 60 * 1000)).toISOString(),
-            transfers: [
-                {
-                    address: 'my1vtAh3gTZEPVmF7TGzzfmsf2wcTVaYUj',
-                    coin: getRandomIntInclusive(1, 1000)
-                }, {
-                    address: '1FQ7LNa74kpimsb1g8s5gbG6P67yHb8njj',
-                    coin: getRandomIntInclusive(1, 1000)
-                }
-            ]
-        }
-    };
+
+    var offer = new Offer(
+        'OFFER_' + Object.keys(offerStorage).length,
+        new Invoice(new Date(new Date().getTime() + (2 * 60 * 60 * 1000)).toISOString(),
+            [
+                new Transfer('my1vtAh3gTZEPVmF7TGzzfmsf2wcTVaYUj', getRandomIntInclusive(1, 1000)),
+                new Transfer('1FQ7LNa74kpimsb1g8s5gbG6P67yHb8njj', getRandomIntInclusive(1, 1000))
+            ])
+    );
 
     offerStorage[offer.id] = offer;
 
