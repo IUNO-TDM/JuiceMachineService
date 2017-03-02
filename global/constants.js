@@ -4,7 +4,8 @@
 
 const self = {
     CONFIG: {
-        LOG_LEVEL: 'debug'
+        LOG_LEVEL: 'debug',
+        USER_UUID: '123e4567-e89b-12d3-a456-426655440000'
     },
     HOST_SETTINGS: {
         MARKETPLACE_CORE: {

@@ -11,4 +11,18 @@ function User(id, firstname, lastname, email, thumbnail, imageReg) {
     this.imageRef = imageReg;
 }
 
+User.prototype.CreateFromCoreJSON = function(jsonData) {
+
+    console.error('--- TODO: Implement this ---');
+    //TODO: Implement this
+    return new User(
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'thumbnail',
+        'imageRef'
+    )
+};
+
 module.exports = User;

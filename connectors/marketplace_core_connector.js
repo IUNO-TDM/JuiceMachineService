@@ -7,8 +7,13 @@ var self = {};
 var http = require('https');
 var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
+var CONFIG = require('../global/constants').CONFIG;
+
 var Recipe = require('../model/recipe');
+var User = require('../model/user');
+
 var helper = require('../services/helper_service');
+
 var request = require('request');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
@@ -25,6 +30,8 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 self.getAllRecipesForConfiguration = function (configuration, callback) {
+
+    //TODO: Parse configuration into query parameters for technology data call
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -32,8 +39,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            'userUUID' :  '12345',
-            'ingredients': configuration
+            'userUUID' :  CONFIG.USER_UUID
         }
     );
 
@@ -68,29 +74,128 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
             return;
         }
 
-        //TODO: Parse json data into objects to validate the content
+        var recipes = [];
+        jsonData.forEach(function(entry) {
+            recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
+        });
+
         if (typeof(callback) == 'function') {
 
-            callback(null, jsonData);
+            callback(null, recipes);
         }
     });
 };
 
 
 self.getRecipeForId = function (recipeId, callback) {
-    //TODO: Retrieve single recipe from market place core
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata/' + recipeId,
+        {
+            'userUUID' :  CONFIG.USER_UUID
+        }
+    );
 
-    if (typeof(callback) == 'function') {
-        callback(null, recipeStorage[recipeId]);
-    }
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode != 200) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isObject(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected object. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, new Recipe().CreateRecipeFromCoreJSON(jsonData));
+        }
+    });
 };
 
 self.createOfferForRequest = function (request, callback) {
-    //TODO: Pass the request to the market place core.
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/offers',
+        {
+            'userUUID' :  CONFIG.USER_UUID
+        }
+    );
 
-    if (typeof (callback) == 'function') {
-        callback(null, offerId);
-    }
+    options.body = {
+        items: request.items,
+        hsmId: request.hsmId
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode != 200) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isArray(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected array. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+        var recipes = [];
+        jsonData.forEach(function(entry) {
+            recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
+        });
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, recipes);
+        }
+    });
 };
 
 self.getOfferForId = function (offerId, callback) {
@@ -110,11 +215,55 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
 };
 
 self.getUserForId = function (userId, callback) {
-    // TODO: Retrieve user from market place core.
 
-    if (typeof(callback) == 'function') {
-        callback(null);
-    }
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/users/' + userId,
+        {
+            'userUUID' :  CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode != 200) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isObject(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected object. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, new User().CreateFromCoreJSON(jsonData));
+        }
+    });
 };
 
 module.exports = self;

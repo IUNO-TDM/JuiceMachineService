@@ -42,12 +42,22 @@ Recipe.prototype.CreateRecipeFromJSON = function(jsonData) {
 };
 
 Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
-    //TODO: IMPLEMENT THIS FUNCTION: Create the recipe object from the actual json data that is returned from the CORE
-    console.warn('MISSING IMPLEMENTATION');
 
     return new Recipe(
-
-    );
+        jsonData['technologydatauuid'],
+        jsonData['technologydataname'],
+        jsonData['technologydatadescription'],
+        jsonData['licencefee'],
+        jsonData['technologydatathumbnail'],
+        jsonData['technologydataimgref'], //TODO: Redirect image ref on juice machine service
+        jsonData['useruuid'],
+        jsonData['createdat'],
+        jsonData['updatedat'],
+        null, //TODO: Rating still missing
+        jsonData['licencefee'], //TODO: Calculate retail price
+        null, //TODO: Is this id needed?
+        jsonData['technologydata']
+    )
 };
 
 module.exports = Recipe;
