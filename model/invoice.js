@@ -3,9 +3,10 @@
  */
 
 function Invoice (expiration, transfers) {
-    self.expiration = expiration;
-    self.transfers = transfers;
+    this.expiration = expiration;
+    this.transfers = transfers;
 }
 
+//TODO: Add total amount
 
 module.exports = Invoice;

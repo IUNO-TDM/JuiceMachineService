@@ -10,7 +10,7 @@ const self = {
     HOST_SETTINGS: {
         MARKETPLACE_CORE: {
             HOST: 'localhost',
-            PORT: 3001
+            PORT: 3002
         }
     }
 };

@@ -11,6 +11,7 @@ var CONFIG = require('../global/constants').CONFIG;
 
 var Recipe = require('../model/recipe');
 var User = require('../model/user');
+var Offer = require('../model/offer');
 
 var helper = require('../services/helper_service');
 
@@ -39,7 +40,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            'userUUID' :  CONFIG.USER_UUID
+            'userUUID': CONFIG.USER_UUID
         }
     );
 
@@ -75,7 +76,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         }
 
         var recipes = [];
-        jsonData.forEach(function(entry) {
+        jsonData.forEach(function (entry) {
             recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
         });
 
@@ -95,7 +96,7 @@ self.getRecipeForId = function (recipeId, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
         {
-            'userUUID' :  CONFIG.USER_UUID
+            'userUUID': CONFIG.USER_UUID
         }
     );
 
@@ -146,12 +147,20 @@ self.createOfferForRequest = function (request, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
         {
-            'userUUID' :  CONFIG.USER_UUID
+            'userUUID': CONFIG.USER_UUID
         }
     );
 
+    var items = [];
+    request['items'].forEach(function (entry) {
+        items.push({
+            dataId: entry.recipeId,
+            amount: entry.amount
+        });
+    });
+
     options.body = {
-        items: request.items,
+        items: items,
         hsmId: request.hsmId
     };
 
@@ -178,22 +187,19 @@ self.createOfferForRequest = function (request, callback) {
             return;
         }
 
-        if (!helper.isArray(jsonData)) {
+        if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected array. But did get something different: ' + jsonData
+                message: 'Expected object. But did get something different: ' + jsonData
             });
             return;
         }
 
-        var recipes = [];
-        jsonData.forEach(function(entry) {
-            recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
-        });
+        var offer = new Offer().CreateFromCoreJSON(jsonData);
 
         if (typeof(callback) == 'function') {
 
-            callback(null, recipes);
+            callback(null, offer);
         }
     });
 };
@@ -223,7 +229,7 @@ self.getUserForId = function (userId, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId,
         {
-            'userUUID' :  CONFIG.USER_UUID
+            'userUUID': CONFIG.USER_UUID
         }
     );
 

@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/dummy_connector');
+var marketplaceCore = require('../connectors/marketplace_core_connector');
 var helper = require('../services/helper_service');
 var validate = require('express-jsonschema').validate;
 

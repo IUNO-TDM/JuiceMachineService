@@ -4,8 +4,8 @@
 
 
 function Transfer (address, coin) {
-    self.address = address;
-    self.coin = coin;
+    this.address = address;
+    this.coin = coin;
 }
 
 module.exports = Transfer;
