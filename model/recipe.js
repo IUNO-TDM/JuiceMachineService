@@ -50,7 +50,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['licencefee'],
         jsonData['technologydatathumbnail'],
         jsonData['technologydataimgref'], //TODO: Redirect image ref on juice machine service
-        jsonData['useruuid'],
+        jsonData['technologydataauthor'],
         jsonData['createdat'],
         jsonData['updatedat'],
         null, //TODO: Rating still missing

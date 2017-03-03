@@ -43,7 +43,6 @@ router.get('/:id', function (req, res, next) {
 
         res.json(recipe);
     });
-
 });
 
 module.exports = router;

@@ -45,10 +45,10 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
-            console.error(e);
+            logger.crit(e);
             if (typeof(callback) == 'function') {
 
                 callback(e);
@@ -104,7 +104,7 @@ self.getRecipeForId = function (recipeId, callback) {
         logger.debug('Response:' + jsonData);
 
         if (e) {
-            console.error(e);
+            logger.crit(e);
             if (typeof(callback) == 'function') {
 
                 callback(e);
@@ -168,7 +168,7 @@ self.createOfferForRequest = function (request, callback) {
         logger.debug('Response:' + jsonData);
 
         if (e) {
-            console.error(e);
+            logger.crit(e);
             if (typeof(callback) == 'function') {
 
                 callback(e);
@@ -237,7 +237,7 @@ self.getUserForId = function (userId, callback) {
         logger.debug('Response:' + jsonData);
 
         if (e) {
-            console.error(e);
+            logger.crit(e);
             if (typeof(callback) == 'function') {
 
                 callback(e);
