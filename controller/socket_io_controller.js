@@ -3,14 +3,20 @@
  */
 
 var logger = require('../global/logger');
+const license_service = require('../services/license_service');
 
-function onIOConnect(socket) {
-    logger.debug('Client for Offer connected.' + socket.id);
+function onIOLicenseConnect(socket) {
+    logger.debug('Client for License Updates connected.' + socket.id);
 
-    socket.on('room', function(offerId) {
-        logger.debug('Client joining room: ' + offerId);
-
-        socket.join(offerId);
+    socket.on('room', function(hsmId) {
+        logger.debug('Client joining license room: ' + hsmId);
+        socket.join(hsmId);
+        license_service.registerUpdates(hsmId)
+    });
+    socket.on('leave', function(hsmId) {
+        logger.debug('Client joining license room: ' + hsmId);
+        socket.leave(hsmId);
+        license_service.unregisterUpdates(hsmId)
     });
 
     socket.on('disconnect', function () {
@@ -20,14 +26,14 @@ function onIOConnect(socket) {
 
 module.exports = function (io) {
 
-    var namespace = io.of('/offer');
-    namespace.on('connection', onIOConnect);
-
-    // setInterval(function () {
-    //     io.emit('message', 'Message to all clients.');
-    //     namespace.emit('message', 'Message to Offer Namespace only.');
-    //     namespace.to('Offer_1234').emit('message', 'Message to Room Offer_1234 and Offer Namespace only.');
-    //     namespace.to('THE ROOM').emit('message', 'Message to the default room');
-    // }, 5000);
+    var namespace = io.of('/licenses');
+    namespace.on('connection', onIOLicenseConnect);
+    registerLicenseEvents();
 
 };
+
+function registerLicenseEvents(){
+        license_service.on('updateAvailable', function(offerId,hsmId){
+        socket.to(hsmId).emit('updateAvailable',{hsmId: hsmId, offerId: offerId});
+    })
+}

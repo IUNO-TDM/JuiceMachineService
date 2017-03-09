@@ -82,4 +82,6 @@ if (app.get('env') === 'development') {
     });
 }
 
+const license_service = require('./services/license_service');
+
 module.exports = app;
