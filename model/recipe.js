@@ -47,14 +47,14 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['technologydatauuid'],
         jsonData['technologydataname'],
         jsonData['technologydatadescription'],
-        jsonData['licencefee'],
+        jsonData['licensefee'],
         jsonData['technologydatathumbnail'],
         jsonData['technologydataimgref'], //TODO: Redirect image ref on juice machine service
         jsonData['technologydataauthor'],
         jsonData['createdat'],
         jsonData['updatedat'],
         null, //TODO: Rating still missing
-        jsonData['licencefee'], //TODO: Calculate retail price
+        jsonData['licensefee'], //TODO: Calculate retail price
         null, //TODO: Is this id needed?
         jsonData['technologydata']
     )

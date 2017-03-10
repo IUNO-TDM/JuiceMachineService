@@ -139,7 +139,7 @@ self.getRecipeForId = function (recipeId, callback) {
     });
 };
 
-self.createOfferForRequest = function (request, callback) {
+self.createOfferForRequest = function (offerRequest, callback) {
     var options = buildOptionsForRequest(
         'POST',
         'http',
@@ -152,7 +152,7 @@ self.createOfferForRequest = function (request, callback) {
     );
 
     var items = [];
-    request['items'].forEach(function (entry) {
+    offerRequest['items'].forEach(function (entry) {
         items.push({
             dataId: entry.recipeId,
             amount: entry.amount
@@ -161,7 +161,7 @@ self.createOfferForRequest = function (request, callback) {
 
     options.body = {
         items: items,
-        hsmId: request.hsmId
+        hsmId: offerRequest.hsmId
     };
 
     request(options, function (e, r, jsonData) {
@@ -175,7 +175,7 @@ self.createOfferForRequest = function (request, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
+        if (r.statusCode != 201) {
             logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
@@ -195,11 +195,11 @@ self.createOfferForRequest = function (request, callback) {
             return;
         }
 
-        var offer = new Offer().CreateFromCoreJSON(jsonData);
+        // var offer = new Offer().CreateFromCoreJSON(jsonData);
 
         if (typeof(callback) == 'function') {
 
-            callback(null, offer);
+            callback(null, jsonData);
         }
     });
 };
