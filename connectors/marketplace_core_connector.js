@@ -165,7 +165,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             logger.crit(e);
@@ -206,6 +206,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
 
 self.getOfferForId = function (offerId, callback) {
     // TODO: Retrieve a offer from the market place core
+    logger.crit(' -- Function not Implemented --');
 
     if (typeof(callback) == 'function') {
         callback(null);
@@ -214,6 +215,7 @@ self.getOfferForId = function (offerId, callback) {
 
 self.savePaymentForOffer = function (offerId, payment, callback) {
     // TODO: Post a offer to the market place core
+    logger.crit(' -- Function not Implemented --');
 
     if (typeof(callback) == 'function') {
         callback(null);
