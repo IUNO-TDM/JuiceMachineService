@@ -16,12 +16,12 @@ User.prototype.CreateFromCoreJSON = function(jsonData) {
     console.error('--- TODO: Implement this ---');
     //TODO: Implement this
     return new User(
-        'id',
-        'firstName',
-        'lastName',
-        'email',
-        'thumbnail',
-        'imageRef'
+        jsonData.useruuid, //'id',
+        jsonData.userfirstname, //'firstName',
+        jsonData.userlastname, //'lastName',
+        jsonData.useremail, //'email',
+        null, //'thumbnail',
+        null //'imageRef'
     )
 };
 

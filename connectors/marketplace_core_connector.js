@@ -56,12 +56,11 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         }
 
         if (r.statusCode != 200) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -101,7 +100,7 @@ self.getRecipeForId = function (recipeId, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             logger.crit(e);
@@ -112,12 +111,11 @@ self.getRecipeForId = function (recipeId, callback) {
         }
 
         if (r.statusCode != 200) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -176,12 +174,11 @@ self.createOfferForRequest = function (offerRequest, callback) {
         }
 
         if (r.statusCode != 201) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -236,7 +233,7 @@ self.getUserForId = function (userId, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             logger.crit(e);
@@ -247,12 +244,11 @@ self.getUserForId = function (userId, callback) {
         }
 
         if (r.statusCode != 200) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;

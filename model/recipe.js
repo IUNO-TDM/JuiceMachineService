@@ -44,19 +44,19 @@ Recipe.prototype.CreateRecipeFromJSON = function(jsonData) {
 Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
 
     return new Recipe(
-        jsonData['technologydatauuid'],
-        jsonData['technologydataname'],
-        jsonData['technologydatadescription'],
-        jsonData['licensefee'],
-        jsonData['technologydatathumbnail'],
-        jsonData['technologydataimgref'], //TODO: Redirect image ref on juice machine service
-        jsonData['technologydataauthor'],
-        jsonData['createdat'],
-        jsonData['updatedat'],
-        null, //TODO: Rating still missing
-        jsonData['licensefee'], //TODO: Calculate retail price
-        null, //TODO: Is this id needed?
-        jsonData['technologydata']
+        jsonData['technologydatauuid'], //id
+        jsonData['technologydataname'], //title
+        jsonData['technologydatadescription'], //description
+        jsonData['licensefee'], //licencefee
+        jsonData['technologydatathumbnail'], //thumbnail
+        jsonData['technologydataimgref'], //imageRef TODO: Redirect image ref on juice machine service
+        jsonData['createdby'], //authorId
+        jsonData['createdat'], //createdAt
+        jsonData['updatedat'], //updatedAt
+        null, //rating TODO: Rating still missing
+        jsonData['licensefee'], //retailPrice TODO: Calculate retail price
+        null, //productId TODO: Is this id needed?
+        jsonData['technologydata'] //program
     )
 };
 
