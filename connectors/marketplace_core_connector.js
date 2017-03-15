@@ -56,7 +56,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
+        if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
