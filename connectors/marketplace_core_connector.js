@@ -40,7 +40,8 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: CONFIG.USER_UUID,
+            components: configuration.ingredients
         }
     );
 
