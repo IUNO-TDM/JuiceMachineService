@@ -174,7 +174,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
             }
         }
 
-        if (r.statusCode != 201) {
+        if (r && r.statusCode != 201) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -244,7 +244,7 @@ self.getUserForId = function (userId, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
+        if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
