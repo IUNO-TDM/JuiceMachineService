@@ -30,6 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
+//<editor-fold desc="Recipes">
 self.getAllRecipesForConfiguration = function (configuration, callback) {
 
     //TODO: Parse configuration into query parameters for technology data call
@@ -137,6 +138,12 @@ self.getRecipeForId = function (recipeId, callback) {
     });
 };
 
+self.getImageForRecipe = function(recipeId, callback) {
+    throw {name : "NotImplementedError", message : "too lazy to implement"};
+};
+
+//</editor-fold>
+//<editor-fold desc="Offer">
 self.createOfferForRequest = function (offerRequest, callback) {
     var options = buildOptionsForRequest(
         'POST',
@@ -218,6 +225,8 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
         callback(null);
     }
 };
+//</editor-fold>
+//<editor-fold desc="User">
 
 self.getUserForId = function (userId, callback) {
 
@@ -270,4 +279,9 @@ self.getUserForId = function (userId, callback) {
     });
 };
 
+self.getImageForUser = function(userId, callback) {
+    throw {name : "NotImplementedError", message : "too lazy to implement"};
+};
+
+//</editor-fold>
 module.exports = self;
