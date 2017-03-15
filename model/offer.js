@@ -12,11 +12,9 @@ function Offer(id, invoice) {
 
 Offer.prototype.CreateFromCoreJSON = function(jsonData) {
 
-    console.error('--- TODO: Implement this ---');
-    //TODO: Implement this
     return new Offer(
-        'id',
-        new Invoice()
+        jsonData.id, //'id',
+        new Invoice(jsonData.invoice.expiration, jsonData.invoice.transfers)
     )
 };
 
