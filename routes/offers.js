@@ -6,7 +6,6 @@ var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
 var marketplaceCore = require('../connectors/marketplace_core_connector');
-var helper = require('../services/helper_service');
 var validate = require('express-jsonschema').validate;
 
 
@@ -22,7 +21,7 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
         }
 
         var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-        res.set('Location', fullUrl + offer.id);
+        res.set('Location', fullUrl + '/' + offer.id);
         res.status(201);
         res.json(offer);
     });
