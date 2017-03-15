@@ -49,7 +49,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['technologydatadescription'], //description
         jsonData['licensefee'], //licencefee
         jsonData['technologydatathumbnail'], //thumbnail
-        jsonData['technologydataimgref'], //imageRef TODO: Redirect image ref on juice machine service
+        null, //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
         jsonData['createdby'], //authorId
         jsonData['createdat'], //createdAt
         jsonData['updatedat'], //updatedAt

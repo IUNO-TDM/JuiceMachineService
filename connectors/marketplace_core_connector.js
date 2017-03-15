@@ -139,7 +139,42 @@ self.getRecipeForId = function (recipeId, callback) {
 };
 
 self.getImageForRecipe = function(recipeId, callback) {
-    throw {name : "NotImplementedError", message : "too lazy to implement"};
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata/' + recipeId + '/image',
+        {
+            'userUUID': CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, imageBuffer) {
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: imageBuffer
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, imageBuffer);
+        }
+    });
 };
 
 //</editor-fold>
@@ -280,7 +315,42 @@ self.getUserForId = function (userId, callback) {
 };
 
 self.getImageForUser = function(userId, callback) {
-    throw {name : "NotImplementedError", message : "too lazy to implement"};
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/users/' + userId + '/image',
+        {
+            'userUUID': CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, imageBuffer) {
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: imageBuffer
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, imageBuffer);
+        }
+    });
 };
 
 //</editor-fold>
