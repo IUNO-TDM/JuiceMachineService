@@ -15,7 +15,7 @@ Offer.prototype.CreateFromCoreJSON = function (jsonData) {
     var transfers = [];
     for (var key in jsonData.invoice.transfers) {
         var transfer = jsonData.invoice.transfers[key];
-        transfers.put(new Transfer(transfer.address, transfer.coin));
+        transfers.push(new Transfer(transfer.address, transfer.coin));
     }
 
     return new Offer(
