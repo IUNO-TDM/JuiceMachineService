@@ -111,7 +111,7 @@ self.getRecipeForId = function (recipeId, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
+        if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -193,11 +193,11 @@ self.createOfferForRequest = function (offerRequest, callback) {
             return;
         }
 
-        // var offer = new Offer().CreateFromCoreJSON(jsonData);
+        var offer = new Offer().CreateFromCoreJSON(jsonData);
 
         if (typeof(callback) == 'function') {
 
-            callback(null, jsonData);
+            callback(null, offer);
         }
     });
 };

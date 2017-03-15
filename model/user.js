@@ -11,8 +11,8 @@ function User(id, firstname, lastname, email, thumbnail, imageReg) {
     this.imageRef = imageReg;
 }
 
-User.prototype.CreateFromCoreJSON = function(jsonData) {
-    
+User.prototype.CreateFromCoreJSON = function (jsonData) {
+
     return new User(
         jsonData.useruuid, //'id',
         jsonData.userfirstname, //'firstName',
