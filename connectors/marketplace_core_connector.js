@@ -30,6 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
+//<editor-fold desc="Recipes">
 self.getAllRecipesForConfiguration = function (configuration, callback) {
 
     //TODO: Parse configuration into query parameters for technology data call
@@ -138,6 +139,47 @@ self.getRecipeForId = function (recipeId, callback) {
     });
 };
 
+self.getImageForRecipe = function(recipeId, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata/' + recipeId + '/image',
+        {
+            'userUUID': CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, imageBuffer) {
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: imageBuffer
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, imageBuffer);
+        }
+    });
+};
+
+//</editor-fold>
+//<editor-fold desc="Offer">
 self.createOfferForRequest = function (offerRequest, callback) {
     var options = buildOptionsForRequest(
         'POST',
@@ -219,6 +261,8 @@ self.savePaymentForOffer = function (offerId, payment, callback) {
         callback(null);
     }
 };
+//</editor-fold>
+//<editor-fold desc="User">
 
 self.getUserForId = function (userId, callback) {
 
@@ -271,4 +315,44 @@ self.getUserForId = function (userId, callback) {
     });
 };
 
+self.getImageForUser = function(userId, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/users/' + userId + '/image',
+        {
+            'userUUID': CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, imageBuffer) {
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: imageBuffer
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, imageBuffer);
+        }
+    });
+};
+
+//</editor-fold>
 module.exports = self;

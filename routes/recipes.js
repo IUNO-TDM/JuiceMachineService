@@ -45,4 +45,21 @@ router.get('/:id', function (req, res, next) {
     });
 });
 
+router.get('/:id/image', function (req, res, next) {
+    marketplaceCore.getImageForRecipe(req.params['id'], function (err, image) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!image) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', 'image/jpg');
+        res.send(image);
+    });
+});
+
 module.exports = router;

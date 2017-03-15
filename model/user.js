@@ -19,7 +19,7 @@ User.prototype.CreateFromCoreJSON = function (jsonData) {
         jsonData.userlastname, //'lastName',
         jsonData.useremail, //'email',
         null, //'thumbnail',
-        null //'imageRef'
+        null //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
     )
 };
 
