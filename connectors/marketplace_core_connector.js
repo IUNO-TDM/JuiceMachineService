@@ -327,6 +327,8 @@ self.getImageForUser = function(userId, callback) {
         }
     );
 
+    options.encoding = null;
+
     request(options, function (e, r, imageBuffer) {
         if (e) {
             logger.crit(e);
