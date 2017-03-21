@@ -253,14 +253,6 @@ self.getOfferForId = function (offerId, callback) {
     }
 };
 
-self.savePaymentForOffer = function (offerId, payment, callback) {
-    // TODO: Post a offer to the market place core
-    logger.crit(' -- Function not Implemented --');
-
-    if (typeof(callback) == 'function') {
-        callback(null);
-    }
-};
 //</editor-fold>
 //<editor-fold desc="User">
 
