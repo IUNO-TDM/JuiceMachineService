@@ -71,7 +71,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         if (!helper.isArray(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected array. But did get something different: ' + jsonData
+                message: 'Error while retrieving a list of recipes from the market place core. Expected an json array but got something different: ' + jsonData
             });
             return;
         }
@@ -126,7 +126,7 @@ self.getRecipeForId = function (recipeId, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while retrieving a single recipe from the market place core. Expected a single object but got something different: ' + jsonData
             });
             return;
         }
@@ -230,7 +230,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while requesting a offer on the market place core. Expected an JSON Object but got something different: ' + jsonData
             });
             return;
         }
@@ -285,7 +285,7 @@ self.getUserForId = function (userId, callback) {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            logger.warn('Call not successful for options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -294,7 +294,7 @@ self.getUserForId = function (userId, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while retrieving a single user from the market place core. Expected a JSON object but got something different: ' + jsonData
             });
             return;
         }
