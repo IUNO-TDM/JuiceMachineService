@@ -139,7 +139,7 @@ self.getRecipeForId = function (recipeId, callback) {
     });
 };
 
-self.getImageForRecipe = function(recipeId, callback) {
+self.getImageForRecipe = function (recipeId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -151,7 +151,9 @@ self.getImageForRecipe = function(recipeId, callback) {
         }
     );
 
-    request(options, function (e, r, imageBuffer) {
+    options.encoding = null;
+
+    request(options, function (e, r, data) {
         if (e) {
             logger.crit(e);
             if (typeof(callback) == 'function') {
@@ -163,7 +165,7 @@ self.getImageForRecipe = function(recipeId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: imageBuffer
+                message: data
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -173,7 +175,10 @@ self.getImageForRecipe = function(recipeId, callback) {
 
         if (typeof(callback) == 'function') {
 
-            callback(null, imageBuffer);
+            callback(null, {
+                imageBuffer: data,
+                contentType: r.headers['content-type']
+            });
         }
     });
 };
@@ -315,7 +320,7 @@ self.getUserForId = function (userId, callback) {
     });
 };
 
-self.getImageForUser = function(userId, callback) {
+self.getImageForUser = function (userId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -326,8 +331,9 @@ self.getImageForUser = function(userId, callback) {
             'userUUID': CONFIG.USER_UUID
         }
     );
+    options.encoding = null;
 
-    request(options, function (e, r, imageBuffer) {
+    request(options, function (e, r, data) {
         if (e) {
             logger.crit(e);
             if (typeof(callback) == 'function') {
@@ -339,7 +345,7 @@ self.getImageForUser = function(userId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: imageBuffer
+                message: data
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -349,7 +355,10 @@ self.getImageForUser = function(userId, callback) {
 
         if (typeof(callback) == 'function') {
 
-            callback(null, imageBuffer);
+            callback(null, {
+                imageBuffer: data,
+                contentType: r.headers['content-type']
+            });
         }
     });
 };
