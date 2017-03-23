@@ -165,7 +165,7 @@ self.getImageForRecipe = function (recipeId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: data
+                message: r.statusMessage
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -337,7 +337,7 @@ self.getImageForUser = function (userId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: data
+                message: r.statusMessage
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -348,7 +348,7 @@ self.getImageForUser = function (userId, callback) {
         if (typeof(callback) == 'function') {
 
             callback(null, {
-                imageBuffer: data,
+                imageBuffer: imageBuffer,
                 contentType: r.headers['content-type']
             });
         }
