@@ -71,7 +71,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         if (!helper.isArray(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected array. But did get something different: ' + jsonData
+                message: 'Error while retrieving a list of recipes from the market place core. Expected an json array but got something different: ' + jsonData
             });
             return;
         }
@@ -126,7 +126,7 @@ self.getRecipeForId = function (recipeId, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while retrieving a single recipe from the market place core. Expected a single object but got something different: ' + jsonData
             });
             return;
         }
@@ -235,7 +235,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while requesting a offer on the market place core. Expected an JSON Object but got something different: ' + jsonData
             });
             return;
         }
@@ -258,14 +258,6 @@ self.getOfferForId = function (offerId, callback) {
     }
 };
 
-self.savePaymentForOffer = function (offerId, payment, callback) {
-    // TODO: Post a offer to the market place core
-    logger.crit(' -- Function not Implemented --');
-
-    if (typeof(callback) == 'function') {
-        callback(null);
-    }
-};
 //</editor-fold>
 //<editor-fold desc="User">
 
@@ -298,7 +290,7 @@ self.getUserForId = function (userId, callback) {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            logger.warn('Call not successful for options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -307,7 +299,7 @@ self.getUserForId = function (userId, callback) {
         if (!helper.isObject(jsonData)) {
             callback({
                 status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
+                message: 'Error while retrieving a single user from the market place core. Expected a JSON object but got something different: ' + jsonData
             });
             return;
         }
@@ -333,7 +325,7 @@ self.getImageForUser = function (userId, callback) {
     );
     options.encoding = null;
 
-    request(options, function (e, r, data) {
+    request(options, function (e, r, imageBuffer) {
         if (e) {
             logger.crit(e);
             if (typeof(callback) == 'function') {

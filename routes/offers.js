@@ -45,20 +45,4 @@ router.get('/:id', function (req, res, next) {
 
 });
 
-router.post('/:id/payment', validate({body: require('../schema/payment_schema')}) ,function (req, res, next) {
-    var data = req.body;
-
-    logger.debug(data);
-
-    marketplaceCore.savePaymentForOffer(req.params['id'], data, function (err) {
-        if (err) {
-            next(err);
-
-            return;
-        }
-
-        res.sendStatus(200);
-    });
-});
-
 module.exports = router;
