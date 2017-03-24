@@ -165,7 +165,7 @@ self.getImageForRecipe = function (recipeId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: r.statusMessage
+                message: data ? data : r.statusMessage
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -177,7 +177,7 @@ self.getImageForRecipe = function (recipeId, callback) {
 
             callback(null, {
                 imageBuffer: data,
-                contentType: r.headers['content-type']
+                contentType: r ? r.headers['content-type'] : null
             });
         }
     });
@@ -337,7 +337,7 @@ self.getImageForUser = function (userId, callback) {
         if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
-                message: r.statusMessage
+                message: imageBuffer ? imageBuffer : r.statusMessage
             };
             logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
@@ -349,7 +349,7 @@ self.getImageForUser = function (userId, callback) {
 
             callback(null, {
                 imageBuffer: imageBuffer,
-                contentType: r.headers['content-type']
+                contentType: r ? r.headers['content-type'] : null
             });
         }
     });
