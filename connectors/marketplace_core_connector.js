@@ -406,5 +406,63 @@ self.getImageForUser = function (userId, callback) {
     });
 };
 
+self.getAllComponents = function(callback) {
+    if (typeof(callback) != 'function') {
+
+        callback = function(err, data) {
+            logger.warn('No callback registered for this function call');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/components',
+        {
+            userUUID: CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from marketplace core:' + JSON.stringify(jsonData));
+
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isArray(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Error while retrieving a list of components from the market place core. Expected an json array but got something different: ' + jsonData
+            });
+            return;
+        }
+
+        var components = [];
+        jsonData.forEach(function (entry) {
+            components.push(new Component().CreateComponentFromJSON(entry));
+        });
+
+        callback(null, components);
+    });
+};
+
 //</editor-fold>
 module.exports = self;

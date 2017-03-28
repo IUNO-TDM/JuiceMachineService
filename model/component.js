@@ -3,16 +3,16 @@
  */
 
 function Component (id, name, description) {
-    this.id = id
+    this.id = id;
     this.name = name;
-    this.transfers = description;
+    this.description = description;
 }
 
 
 Component.prototype.CreateComponentFromJSON = function(jsonData) {
 
-    return new Recipe(
-        jsonData['id'],
+    return new Component(
+        jsonData['componentuuid'],
         jsonData['componentname'],
         jsonData['componentdescription']
     );
