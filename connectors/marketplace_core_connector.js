@@ -141,12 +141,18 @@ self.getRecipeForId = function (recipeId, callback) {
 };
 
 self.getComponentsForRecipeId = function(recipeId, callback) {
+    if (typeof(callback) != 'function') {
+        callback = function(err, data) {
+            logger.warn('No callback registered for function call.');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         'http',
         HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/technologydata/' + recipeId,
+        '/technologydata/' + recipeId + '/components',
         {
             'userUUID': CONFIG.USER_UUID
         }
@@ -182,11 +188,12 @@ self.getComponentsForRecipeId = function(recipeId, callback) {
             return;
         }
 
+        var components = [];
+        jsonData.forEach(function (entry) {
+            components.push(new Component().CreateComponentFromJSON(entry));
+        });
 
-        if (typeof(callback) == 'function') {
-
-            callback(null, new Component().CreateComponentFromJSON(jsonData));
-        }
+        callback(null, components);
     });
 };
 
