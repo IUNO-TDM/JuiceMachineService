@@ -41,7 +41,13 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        res.json(recipe);
+        marketplaceCore.getComponentsForRecipeId(req.params['id'], function (err, components) {
+            if (!err && components) {
+                recipe.components = components;
+            }
+
+            res.json(recipe);
+        });
     });
 });
 

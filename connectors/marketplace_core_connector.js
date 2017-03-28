@@ -12,6 +12,7 @@ var CONFIG = require('../global/constants').CONFIG;
 var Recipe = require('../model/recipe');
 var User = require('../model/user');
 var Offer = require('../model/offer');
+var Component = require('../model/component');
 
 var helper = require('../services/helper_service');
 
@@ -135,6 +136,56 @@ self.getRecipeForId = function (recipeId, callback) {
         if (typeof(callback) == 'function') {
 
             callback(null, new Recipe().CreateRecipeFromCoreJSON(jsonData));
+        }
+    });
+};
+
+self.getComponentsForRecipeId = function(recipeId, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata/' + recipeId,
+        {
+            'userUUID': CONFIG.USER_UUID
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from marketplace core: ' + JSON.stringify(jsonData));
+
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isArray(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Error while retrieving components for a recipe from the market place core. Expected an array but got something different: ' + jsonData
+            });
+            return;
+        }
+
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, new Component().CreateComponentFromJSON(jsonData));
         }
     });
 };
