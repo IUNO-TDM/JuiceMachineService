@@ -41,7 +41,30 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        res.json(recipe);
+        marketplaceCore.getComponentsForRecipeId(req.params['id'], function (err, components) {
+            if (!err && components) {
+                recipe.components = components;
+            }
+
+            res.json(recipe);
+        });
+    });
+});
+
+router.get('/:id/image', function (req, res, next) {
+    marketplaceCore.getImageForRecipe(req.params['id'], function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
     });
 });
 

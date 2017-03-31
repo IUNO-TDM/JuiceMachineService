@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.1.1",
+    "version": "0.1.2",
     "title": "JuiceMachineService"
   },
   "paths": {
@@ -65,6 +65,31 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}/image": {
+      "get": {
+        "description": "The image for a specific recipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "format" : "byte"
+            }
+          },
+          "404": {
+            "description": "Recipe not found"
           }
         }
       }
@@ -216,6 +241,31 @@
           }
         }
       }
+    },
+    "/users/{userId}/image": {
+      "get": {
+        "description" : "Get the profile image for a specific user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "format" : "byte"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -243,28 +293,6 @@
           "format": "double"
         },
         "currency": {
-          "type": "string"
-        }
-      }
-    },
-    "Request": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "recipeId": {
-                "type": "string"
-              },
-              "amount": {
-                "type": "integer"
-              }
-            }
-          }
-        },
-        "hsmId": {
           "type": "string"
         }
       }

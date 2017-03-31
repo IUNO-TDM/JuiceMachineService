@@ -27,5 +27,23 @@ router.get('/:id', function (req, res, next) {
 
 });
 
+router.get('/:id/image', function (req, res, next) {
+
+    marketplaceCore.getImageForUser(req.params['id'], function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
+    });
+
+});
 
 module.exports = router;

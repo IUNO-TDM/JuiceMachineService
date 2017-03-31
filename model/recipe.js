@@ -2,9 +2,9 @@
  * Created by beuttlerma on 07.02.17.
  */
 
+var Component = require('./component');
 
-
-function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productId, program) {
+function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productId, program, components) {
 
 
     this.id = id;
@@ -20,43 +20,31 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.retailPrice = retailPrice;
     this.productId = productId;
     this.program = program;
+    this.components = components;
 
 }
-// class methods
-Recipe.prototype.CreateRecipeFromJSON = function(jsonData) {
-    return new Recipe(
-        jsonData.id,
-        jsonData.title,
-        jsonData.description,
-        jsonData.licencefee,
-        jsonData.thumbnail,
-        jsonData.imageRef,
-        jsonData.authorId,
-        jsonData.createdAt,
-        jsonData.updatedAt,
-        jsonData.rating,
-        jsonData.retailPrice,
-        jsonData.productId,
-        jsonData.program
-    );
-};
 
 Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
+    var component = [];
+    for (var key in jsonData['componentswithattribute']) {
+        component.push(new Component().CreateComponentFromJSON(jsonData['componentswithattribute'][key]));
+    }
 
     return new Recipe(
-        jsonData['technologydatauuid'],
-        jsonData['technologydataname'],
-        jsonData['technologydatadescription'],
-        jsonData['licensefee'],
-        jsonData['technologydatathumbnail'],
-        jsonData['technologydataimgref'], //TODO: Redirect image ref on juice machine service
-        jsonData['technologydataauthor'],
-        jsonData['createdat'],
-        jsonData['updatedat'],
-        null, //TODO: Rating still missing
-        jsonData['licensefee'], //TODO: Calculate retail price
-        null, //TODO: Is this id needed?
-        jsonData['technologydata']
+        jsonData['technologydatauuid'], //id
+        jsonData['technologydataname'], //title
+        jsonData['technologydatadescription'], //description
+        jsonData['licensefee'], //licencefee
+        jsonData['technologydatathumbnail'], //thumbnail
+        null, //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
+        jsonData['createdby'], //authorId
+        jsonData['createdat'], //createdAt
+        jsonData['updatedat'], //updatedAt
+        null, //rating TODO: Rating still missing
+        jsonData['retailprice'], //retailPrice TODO: Calculate retail price
+        null, //productId TODO: Is this id needed?
+        jsonData['technologydata'],//program
+        component
     )
 };
 
