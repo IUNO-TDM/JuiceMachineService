@@ -6,6 +6,7 @@ var router = express.Router();
 var logger = require('../global/logger');
 var marketplaceCore = require('../connectors/marketplace_core_connector');
 var validate = require('express-jsonschema').validate;
+var helper = require('../services/helper_service');
 
 
 router.get('/', validate({query: require('../schema/recipe_query_schema')}), function (req, res, next) {
@@ -24,6 +25,8 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
             next(err);
             return;
         }
+
+        recipes = helper.shuffleArray(recipes);
 
         res.json(recipes);
     });
