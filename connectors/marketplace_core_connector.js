@@ -4,7 +4,6 @@
 
 var self = {};
 
-var http = require('https');
 var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
 var CONFIG = require('../global/constants').CONFIG;
