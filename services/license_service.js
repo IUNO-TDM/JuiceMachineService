@@ -6,15 +6,15 @@ const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 var logger = require('../global/logger');
 var io = require('socket.io-client');
-const constants = require('../global/constants');
+const config = require('../config/config_loader');
 
 var LicenseService = function () {};
 
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
-license_service.socket =  io.connect('http://' + constants.HOST_SETTINGS.MARKETPLACE_CORE.HOST
-    + ":" + constants.HOST_SETTINGS.MARKETPLACE_CORE.PORT +  "/licenses",{transports: ['websocket']});
+license_service.socket =  io.connect('http://' + config.HOST_SETTINGS.MARKETPLACE_CORE.HOST
+    + ":" + config.HOST_SETTINGS.MARKETPLACE_CORE.PORT +  "/licenses",{transports: ['websocket']});
 license_service.socket.on('connect', function(){
     logger.debug("connected to license SocketIO at Marketplace");
 });

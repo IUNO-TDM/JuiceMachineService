@@ -5,8 +5,7 @@
 var self = {};
 
 var logger = require('../global/logger');
-var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
-var CONFIG = require('../global/constants').CONFIG;
+var CONFIG = require('../config/config_loader');
 
 var Recipe = require('../model/recipe');
 var User = require('../model/user');
@@ -93,8 +92,8 @@ self.getRecipeForId = function (recipeId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
         {
             'userUUID': CONFIG.USER_UUID
@@ -149,8 +148,8 @@ self.getComponentsForRecipeId = function(recipeId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
             'userUUID': CONFIG.USER_UUID
@@ -200,8 +199,8 @@ self.getImageForRecipe = function (recipeId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
         {
             'userUUID': CONFIG.USER_UUID
@@ -246,8 +245,8 @@ self.createOfferForRequest = function (offerRequest, callback) {
     var options = buildOptionsForRequest(
         'POST',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
         {
             'userUUID': CONFIG.USER_UUID
@@ -323,8 +322,8 @@ self.getUserForId = function (userId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId,
         {
             'userUUID': CONFIG.USER_UUID
@@ -373,8 +372,8 @@ self.getImageForUser = function (userId, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId + '/image',
         {
             'userUUID': CONFIG.USER_UUID
@@ -423,8 +422,8 @@ self.getAllComponents = function(callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
             userUUID: CONFIG.USER_UUID
