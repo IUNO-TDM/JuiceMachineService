@@ -36,8 +36,8 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
             userUUID: CONFIG.USER_UUID,
