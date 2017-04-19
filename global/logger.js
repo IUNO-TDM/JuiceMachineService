@@ -87,4 +87,40 @@ logger.trace = function (msg) {
     }
 };
 
+
+// Custom log method for request responses
+logger.logRequestAndResponse = function (err, options, res, data) {
+
+    var loggerOutput = {};
+
+    if (options) {
+        loggerOutput.options = options;
+    }
+
+    if (res) {
+        loggerOutput.statusCode = res.statusCode;
+        loggerOutput.statusMessage = res.statusMessage;
+    }
+
+    if (data) {
+        loggerOutput.data = data;
+    }
+
+    if (err) {
+        loggerOutput.err = err;
+        logger.crit(loggerOutput);
+        return new Error(loggerOutput);
+    }
+    else if (res && res.statusCode > 201) {
+        logger.warn(loggerOutput);
+        return new Error(loggerOutput);
+    }
+    else {
+        logger.debug(loggerOutput);
+    }
+
+
+    return null;
+};
+
 module.exports = logger;

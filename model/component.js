@@ -8,8 +8,17 @@ function Component (id, name, description) {
     this.description = description;
 }
 
-
+/**
+ *
+ * @param jsonData
+ * @returns {*}
+ * @constructor
+ */
 Component.prototype.CreateComponentFromJSON = function(jsonData) {
+
+    if (!jsonData) {
+        return null;
+    }
 
     return new Component(
         jsonData['componentuuid'],
