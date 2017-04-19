@@ -50,13 +50,13 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -80,7 +80,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
             recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
         });
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, recipes);
         }
@@ -105,13 +105,13 @@ self.getRecipeForId = function (recipeId, callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -131,7 +131,7 @@ self.getRecipeForId = function (recipeId, callback) {
         }
 
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, new Recipe().CreateRecipeFromCoreJSON(jsonData));
         }
@@ -139,7 +139,7 @@ self.getRecipeForId = function (recipeId, callback) {
 };
 
 self.getComponentsForRecipeId = function(recipeId, callback) {
-    if (typeof(callback) != 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function(err, data) {
             logger.warn('No callback registered for function call.');
         }
@@ -161,13 +161,13 @@ self.getComponentsForRecipeId = function(recipeId, callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -212,13 +212,13 @@ self.getImageForRecipe = function (recipeId, callback) {
     request(options, function (e, r, data) {
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: data ? data : r.statusMessage
@@ -229,7 +229,7 @@ self.getImageForRecipe = function (recipeId, callback) {
             return;
         }
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, {
                 imageBuffer: data,
@@ -271,7 +271,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
@@ -298,7 +298,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
 
         var offer = new Offer().CreateFromCoreJSON(jsonData);
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, offer);
         }
@@ -309,7 +309,7 @@ self.getOfferForId = function (offerId, callback) {
     // TODO: Retrieve a offer from the market place core
     logger.crit(' -- Function not Implemented --');
 
-    if (typeof(callback) == 'function') {
+    if (typeof(callback) === 'function') {
         callback(null);
     }
 };
@@ -335,13 +335,13 @@ self.getUserForId = function (userId, callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -361,7 +361,7 @@ self.getUserForId = function (userId, callback) {
         }
 
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, new User().CreateFromCoreJSON(jsonData));
         }
@@ -384,13 +384,13 @@ self.getImageForUser = function (userId, callback) {
     request(options, function (e, r, imageBuffer) {
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: imageBuffer ? imageBuffer : r.statusMessage
@@ -401,7 +401,7 @@ self.getImageForUser = function (userId, callback) {
             return;
         }
 
-        if (typeof(callback) == 'function') {
+        if (typeof(callback) === 'function') {
 
             callback(null, {
                 imageBuffer: imageBuffer,
@@ -412,7 +412,7 @@ self.getImageForUser = function (userId, callback) {
 };
 
 self.getAllComponents = function(callback) {
-    if (typeof(callback) != 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function(err, data) {
             logger.warn('No callback registered for this function call');
@@ -435,13 +435,13 @@ self.getAllComponents = function(callback) {
 
         if (e) {
             logger.crit(e);
-            if (typeof(callback) == 'function') {
+            if (typeof(callback) === 'function') {
 
                 callback(e);
             }
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
