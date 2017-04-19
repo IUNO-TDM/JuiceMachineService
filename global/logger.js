@@ -41,19 +41,49 @@ var logger = new (winston.Logger)({
 
 winston.addColors(customColors);
 
-// Extend logger object to properly log 'Error' types
+//Logging wrapper, to remove "unknown function" warnings
 var origLog = logger.log;
-
 logger.log = function (level, msg) {
     if (!msg) {
         msg = level;
         level = 'info';
     }
+    origLog.call(logger, level, msg);
+};
+
+var origFatal = logger.fatal;
+logger.fatal = function (msg) {
+    origFatal.call(logger, msg);
+};
+
+var origCrit = logger.crit;
+logger.crit = function (msg) {
+    origCrit.call(logger, msg);
+};
+
+var origWarn = logger.warn;
+logger.warn = function (msg) {
+    origWarn.call(logger, msg);
+};
+
+var origInfo = logger.info;
+logger.info = function (msg) {
+    origInfo.call(logger, msg);
+};
+
+var origDebug = logger.debug;
+logger.debug = function (msg) {
+    origDebug.call(logger, msg);
+};
+
+// Always log the error trace when tracing
+var origTrace = logger.trace;
+logger.trace = function (msg) {
     var objType = Object.prototype.toString.call(msg);
     if (objType === '[object Error]') {
-        origLog.call(logger, level, msg.toString());
+        origTrace.call(logger, msg);
     } else {
-        origLog.call(logger, level, msg);
+        origTrace.call(logger, new Error(msg));
     }
 };
 
