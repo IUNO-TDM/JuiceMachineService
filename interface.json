@@ -80,6 +80,31 @@
         }
       }
     },
+    "/recipes/{recipeId}/image": {
+      "get": {
+        "description": "The image for a specific recipe",
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "format" : "byte"
+            }
+          },
+          "404": {
+            "description": "Recipe not found"
+          }
+        }
+      }
+    },
     "/offers": {
       "post": {
         "description": "Submits a request for a new offer",
@@ -190,6 +215,31 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/{userId}/image": {
+      "get": {
+        "description" : "Get the profile image for a specific user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "format" : "byte"
+            }
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }

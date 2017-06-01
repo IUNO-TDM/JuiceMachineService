@@ -3,20 +3,24 @@
  */
 
 var Invoice = require('./invoice');
-
+var Transfer = require('./transfer');
 function Offer(id, invoice) {
     this.id = id;
     this.invoice = invoice;
 }
 
 
-Offer.prototype.CreateFromCoreJSON = function(jsonData) {
+Offer.prototype.CreateFromCoreJSON = function (jsonData) {
 
-    console.error('--- TODO: Implement this ---');
-    //TODO: Implement this
+    var transfers = [];
+    for (var key in jsonData.invoice.transfers) {
+        var transfer = jsonData.invoice.transfers[key];
+        transfers.push(new Transfer(transfer.address, transfer.coin));
+    }
+
     return new Offer(
-        'id',
-        new Invoice()
+        jsonData.id, //'id',
+        new Invoice(jsonData.invoice.expiration, transfers)
     )
 };
 

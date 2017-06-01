@@ -6,6 +6,7 @@ var router = express.Router();
 var logger = require('../global/logger');
 var marketplaceCore = require('../connectors/marketplace_core_connector');
 var validate = require('express-jsonschema').validate;
+var helper = require('../services/helper_service');
 
 
 router.get('/', validate({query: require('../schema/recipe_query_schema')}), function (req, res, next) {
@@ -25,6 +26,8 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
             return;
         }
 
+        recipes = helper.shuffleArray(recipes);
+
         res.json(recipes);
     });
 });
@@ -41,7 +44,30 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        res.json(recipe);
+        marketplaceCore.getComponentsForRecipeId(req.params['id'], function (err, components) {
+            if (!err && components) {
+                recipe.components = components;
+            }
+
+            res.json(recipe);
+        });
+    });
+});
+
+router.get('/:id/image', function (req, res, next) {
+    marketplaceCore.getImageForRecipe(req.params['id'], function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
     });
 });
 
