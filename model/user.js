@@ -11,13 +11,23 @@ function User(id, firstname, lastname, email, thumbnail, imageReg) {
     this.imageRef = imageReg;
 }
 
+/**
+ *
+ * @param jsonData
+ * @returns {*}
+ * @constructor
+ */
 User.prototype.CreateFromCoreJSON = function (jsonData) {
 
+    if (!jsonData) {
+        return null;
+    }
+
     return new User(
-        jsonData.useruuid, //'id',
-        jsonData.userfirstname, //'firstName',
-        jsonData.userlastname, //'lastName',
-        jsonData.useremail, //'email',
+        jsonData['useruuid'], //'id',
+        jsonData['userfirstname'], //'firstName',
+        jsonData['userlastname'], //'lastName',
+        jsonData['useremail'], //'email',
         null, //'thumbnail',
         null //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
     )

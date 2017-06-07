@@ -24,7 +24,16 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
 
 }
 
+/**
+ *
+ * @param jsonData
+ * @returns {*}
+ * @constructor
+ */
 Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
+    if (!jsonData) {
+        return null;
+    }
     var component = [];
     for (var key in jsonData['componentswithattribute']) {
         component.push(new Component().CreateComponentFromJSON(jsonData['componentswithattribute'][key]));
