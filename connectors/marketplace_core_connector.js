@@ -32,7 +32,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 //<editor-fold desc="Recipes">
 self.getAllRecipesForConfiguration = function (configuration, callback) {
 
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -69,7 +69,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
 
 
 self.getRecipeForId = function (recipeId, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -101,7 +101,7 @@ self.getRecipeForId = function (recipeId, callback) {
 };
 
 self.getComponentsForRecipeId = function (recipeId, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -135,7 +135,7 @@ self.getComponentsForRecipeId = function (recipeId, callback) {
 };
 
 self.getImageForRecipe = function (recipeId, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -168,7 +168,7 @@ self.getImageForRecipe = function (recipeId, callback) {
 //</editor-fold>
 //<editor-fold desc="Offer">
 self.createOfferForRequest = function (offerRequest, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -220,7 +220,7 @@ self.getOfferForId = function (offerId, callback) {
 //<editor-fold desc="User">
 
 self.getUserForId = function (userId, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -256,7 +256,7 @@ self.getUserForId = function (userId, callback) {
 };
 
 self.getImageForUser = function (userId, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -286,7 +286,7 @@ self.getImageForUser = function (userId, callback) {
 };
 
 self.getAllComponents = function (callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
