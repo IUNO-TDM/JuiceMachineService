@@ -16,7 +16,7 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
     var searchConfig = {
         createdAfter: req.query['after'],
         machineType: req.query['machine'],
-        ingredients: req.query['ingredients']
+        components: req.query['components']
     };
 
     marketplaceCore.getAllRecipesForConfiguration(searchConfig, function (err, recipes) {

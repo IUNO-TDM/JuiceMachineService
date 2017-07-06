@@ -48,9 +48,9 @@
             "type": "string"
           },
           {
-            "name": "ingredients",
+            "name": "components",
             "in": "query",
-            "description": "Array with ingredient (aka components) ids for possible ingredients. Only recipes are returned that can be produced by the given ingredients.",
+            "description": "Array with components (aka ingredients) ids for possible ingredients. Only recipes are returned that can be produced by the given ingredients.",
             "type": "array",
             "items": {
               "type": "string"
@@ -457,7 +457,7 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "ingredient": {
+                    "component": {
                       "type": "string"
                     },
                     "amount": {

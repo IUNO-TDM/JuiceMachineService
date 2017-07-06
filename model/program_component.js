@@ -3,8 +3,8 @@
  */
 
 
-function ProgramComponent (ingredient, amount) {
-    this.ingredient = ingredient;
+function ProgramComponent (component, amount) {
+    this.component = component;
     this.amount = amount;
 }
 

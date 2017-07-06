@@ -47,7 +47,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         '/technologydata',
         {
             userUUID: CONFIG.USER_UUID,
-            components: configuration.ingredients
+            components: configuration.components
         }
     );
 
