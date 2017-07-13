@@ -30,7 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 //<editor-fold desc="Recipes">
-self.getAllRecipesForConfiguration = function (configuration, callback) {
+self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -46,7 +46,8 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            userUUID: CONFIG.USER_UUID,
+            userUUID: uuid,
+            accessToken: accessToken,
             components: configuration.components
         }
     );
@@ -68,7 +69,7 @@ self.getAllRecipesForConfiguration = function (configuration, callback) {
 };
 
 
-self.getRecipeForId = function (recipeId, callback) {
+self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -83,7 +84,8 @@ self.getRecipeForId = function (recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 
@@ -100,7 +102,7 @@ self.getRecipeForId = function (recipeId, callback) {
     });
 };
 
-self.getComponentsForRecipeId = function (recipeId, callback) {
+self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -115,7 +117,8 @@ self.getComponentsForRecipeId = function (recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 
@@ -134,7 +137,7 @@ self.getComponentsForRecipeId = function (recipeId, callback) {
     });
 };
 
-self.getImageForRecipe = function (recipeId, callback) {
+self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -149,7 +152,8 @@ self.getImageForRecipe = function (recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 
@@ -167,7 +171,7 @@ self.getImageForRecipe = function (recipeId, callback) {
 
 //</editor-fold>
 //<editor-fold desc="Offer">
-self.createOfferForRequest = function (offerRequest, callback) {
+self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -182,7 +186,8 @@ self.createOfferForRequest = function (offerRequest, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 
@@ -211,7 +216,7 @@ self.createOfferForRequest = function (offerRequest, callback) {
     });
 };
 
-self.getOfferForId = function (offerId, callback) {
+self.getOfferForId = function (uuid, accessToken, offerId, callback) {
     // TODO: Retrieve a offer from the market place core
     throw new Error('NOT IMPLEMENTED YET');
 };
@@ -219,7 +224,7 @@ self.getOfferForId = function (offerId, callback) {
 //</editor-fold>
 //<editor-fold desc="User">
 
-self.getUserForId = function (userId, callback) {
+self.getUserForId = function (uuid, accessToken, userId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -234,7 +239,8 @@ self.getUserForId = function (userId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId,
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 
@@ -255,7 +261,7 @@ self.getUserForId = function (userId, callback) {
     });
 };
 
-self.getImageForUser = function (userId, callback) {
+self.getImageForUser = function (uuid, accessToken, userId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -270,7 +276,8 @@ self.getImageForUser = function (userId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId + '/image',
         {
-            'userUUID': CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
     options.encoding = null;
@@ -285,7 +292,7 @@ self.getImageForUser = function (userId, callback) {
     });
 };
 
-self.getAllComponents = function (callback) {
+self.getAllComponents = function (uuid, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -300,7 +307,8 @@ self.getAllComponents = function (callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            userUUID: CONFIG.USER_UUID
+            userUUID: uuid,
+            accessToken: accessToken
         }
     );
 

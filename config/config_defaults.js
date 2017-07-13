@@ -11,12 +11,19 @@ var self = {
 // ---- CONFIGURATION EXPORT ----
 
 self.LOG_LEVEL = 'debug';
-self.USER_UUID = '16f69912-d6be-4ef0-ada8-2c1c75578b51';
 self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
         HOST: 'localhost',
         PORT: 3002
+    },
+    OAUTH_SERVER: {
+        HOST: 'localhost',
+        PORT: 3005
     }
+};
+self.OAUTH_CREDENTIALS = {
+    CLIENT_ID: '',
+    CLIENT_SECRET: ''
 };
 
 
