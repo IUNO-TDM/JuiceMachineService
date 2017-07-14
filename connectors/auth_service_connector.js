@@ -50,13 +50,82 @@ self.validateToken = function (userUUID, token, callback) {
             return callback(err);
         }
 
-        tokenValid = tokenInfo.useruuid === userUUID;
-        tokenValid = tokenValid && new Date(tokenInfo.expires) > new Date();
+        tokenValid = tokenInfo.user.id === userUUID;
+        tokenValid = tokenValid && new Date(tokenInfo.accessTokenExpiresAt) > new Date();
 
         callback(err, tokenValid)
     });
 
 
-}
+};
+
+self.getUserForId = function (uuid, accessToken, userId, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/users/' + userId,
+        {
+
+        }
+    );
+
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+        var user;
+
+        if (helper.isObject(jsonData)) {
+            user = new User().CreateFromCoreJSON(jsonData);
+        }
+
+
+        if (typeof(callback) === 'function') {
+
+            callback(err, user);
+        }
+    });
+};
+
+self.getImageForUser = function (uuid, accessToken, userId, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/users/' + userId + '/image',
+        {
+
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+    options.encoding = null;
+
+    request(options, function (e, r, imageBuffer) {
+        var err = logger.logRequestAndResponse(e, options, r, imageBuffer);
+
+        callback(err, {
+            imageBuffer: imageBuffer,
+            contentType: r ? r.headers['content-type'] : null
+        });
+    });
+};
 
 module.exports = self;
