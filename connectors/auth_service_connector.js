@@ -6,6 +6,8 @@
 var logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 var request = require('request');
+var helper = require('../services/helper_service');
+var User = require('../model/user');
 
 var self = {};
 
@@ -23,7 +25,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 self.validateToken = function (userUUID, token, callback) {
-    var tokenValid = false;
+    var isValid = false;
 
     if (typeof(callback) !== 'function') {
 
@@ -50,16 +52,16 @@ self.validateToken = function (userUUID, token, callback) {
             return callback(err);
         }
 
-        tokenValid = tokenInfo.user.id === userUUID;
-        tokenValid = tokenValid && new Date(tokenInfo.accessTokenExpiresAt) > new Date();
+        isValid = tokenInfo.user.id === userUUID;
+        isValid = isValid && new Date(tokenInfo.accessTokenExpiresAt) > new Date();
 
-        callback(err, tokenValid)
+        callback(err, isValid, tokenInfo)
     });
 
 
 };
 
-self.getUserForId = function (uuid, accessToken, userId, callback) {
+self.getUserForId = function (userId, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -97,7 +99,7 @@ self.getUserForId = function (uuid, accessToken, userId, callback) {
     });
 };
 
-self.getImageForUser = function (uuid, accessToken, userId, callback) {
+self.getImageForUser = function (userId, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {

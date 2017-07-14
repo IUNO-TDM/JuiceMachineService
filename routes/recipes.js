@@ -19,7 +19,7 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
         components: req.query['components']
     };
 
-    marketplaceCore.getAllRecipesForConfiguration(req.query['userUUID'], req.accessToken, searchConfig, function (err, recipes) {
+    marketplaceCore.getAllRecipesForConfiguration(req.query['userUUID'], req.token.accessToken, searchConfig, function (err, recipes) {
 
         if (err) {
             next(err);
@@ -33,7 +33,7 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
 });
 
 router.get('/:id', function (req, res, next) {
-    marketplaceCore.getRecipeForId(req.query['userUUID'], req.accessToken, req.params['id'], function (err, recipe) {
+    marketplaceCore.getRecipeForId(req.query['userUUID'], req.token.accessToken, req.params['id'], function (err, recipe) {
         if (err) {
             next(err);
             return;
@@ -44,7 +44,7 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        marketplaceCore.getComponentsForRecipeId(req.query['userUUID'], req.accessToken, req.params['id'], function (err, components) {
+        marketplaceCore.getComponentsForRecipeId(req.query['userUUID'], req.token.accessToken, req.params['id'], function (err, components) {
             if (!err && components) {
                 recipe.components = components;
             }
@@ -55,7 +55,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.get('/:id/image', function (req, res, next) {
-    marketplaceCore.getImageForRecipe(req.query['userUUID'], req.accessToken, req.params['id'], function (err, data) {
+    marketplaceCore.getImageForRecipe(req.query['userUUID'], req.token.accessToken, req.params['id'], function (err, data) {
         if (err) {
             next(err);
             return;

@@ -5,13 +5,13 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var oAuthServer = require('../connectors/auth_service_connector');
 var helper = require('../services/helper_service');
 var validate = require('express-jsonschema').validate;
 
 router.get('/:id', function (req, res, next) {
 
-    marketplaceCore.getUserForId(req.params['id'], function (err, user) {
+    oAuthServer.getUserForId(req.params['id'], req.token.accessToken, function (err, user) {
         if (err) {
             next(err);
             return;
@@ -29,7 +29,7 @@ router.get('/:id', function (req, res, next) {
 
 router.get('/:id/image', function (req, res, next) {
 
-    marketplaceCore.getImageForUser(req.params['id'], function (err, data) {
+    oAuthServer.getImageForUser(req.params['id'], req.token.accessToken, function (err, data) {
         if (err) {
             next(err);
             return;

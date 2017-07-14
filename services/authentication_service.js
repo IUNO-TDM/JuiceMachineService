@@ -34,11 +34,11 @@ function unauthorized(res) {
 self.oAuth = function(req, res, next) {
 
     try {
-        var token = getBearerTokenFromHeader(req);
+        var accessToken = getBearerTokenFromHeader(req);
 
-        authService.validateToken(req.query['userUUID'], token, function(err, isValid){
+        authService.validateToken(req.query['userUUID'], accessToken, function(err, isValid, token){
             if (isValid) {
-                req.accessToken = token;
+                req.token = token;
                 next();
             }
             else {
