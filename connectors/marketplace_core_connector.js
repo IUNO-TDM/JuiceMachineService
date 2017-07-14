@@ -16,6 +16,7 @@ var helper = require('../services/helper_service');
 
 var request = require('request');
 
+
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
     return {
@@ -47,10 +48,12 @@ self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration,
         '/technologydata',
         {
             userUUID: uuid,
-            accessToken: accessToken,
             components: configuration.components
         }
     );
+
+    options.headers.authorization = 'Bearer ' + accessToken;
+
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -84,10 +87,10 @@ self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
 
@@ -117,10 +120,11 @@ self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback)
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -152,11 +156,10 @@ self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
-
+    options.headers.authorization = 'Bearer ' + accessToken;
     options.encoding = null;
 
     request(options, function (e, r, data) {
@@ -186,10 +189,10 @@ self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     var items = [];
     offerRequest['items'].forEach(function (entry) {
@@ -239,10 +242,11 @@ self.getUserForId = function (uuid, accessToken, userId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId,
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -276,10 +280,10 @@ self.getImageForUser = function (uuid, accessToken, userId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId + '/image',
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
     options.encoding = null;
 
     request(options, function (e, r, imageBuffer) {
@@ -307,10 +311,10 @@ self.getAllComponents = function (uuid, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            userUUID: uuid,
-            accessToken: accessToken
+            userUUID: uuid
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);

@@ -10,7 +10,7 @@ var marketplaceCore = require('../connectors/marketplace_core_connector');
 
 router.get('/', function (req, res, next) {
 
-    marketplaceCore.getAllComponents(req.query['userUUID'], req.query['accessToken'], function (err, components) {
+    marketplaceCore.getAllComponents(req.query['userUUID'], req.accessToken, function (err, components) {
 
         if (err) {
             next(err);
