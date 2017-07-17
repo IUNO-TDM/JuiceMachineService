@@ -1,14 +1,58 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.1.4",
+    "version": "1.0.0",
     "title": "JuiceMachineService"
+  },
+  "host": "localhost:3001",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "TDM_Auth": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "http://localhost:3005/oauth/authorise",
+      "tokenUrl": "http://localhost:3006/oauth/token",
+      "scopes": {
+        "default": "Undefined",
+        "dashboard": "view dashboard",
+        "createRecipe": "create a recipe",
+        "viewRecipe": "view a recipe",
+        "viewSecureRecipe": "view a secure recipe",
+        "editRecipe": "edit a recipe",
+        "editSecureRecipe": "edit a secure recipe",
+        "viewUserProfile": "view the user profile",
+        "editUserProfile": "edit user profile",
+        "admin": "admin ui"
+      }
+    }
   },
   "paths": {
     "/components": {
       "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Retrieves a list of possible components (aka ingredients). The components can then be used to configure the machine and request a list of recipes.",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
@@ -31,8 +75,21 @@
     },
     "/recipes": {
       "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Retrieves a list of recipes from the server. The list is filtered by the given query parameters. Only recipes are returned, that can be produced by the specified ingredients. The order of the recipe items is totaly random.",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "after",
             "in": "query",
@@ -55,7 +112,7 @@
             "items": {
               "type": "string"
             },
-            "required": true,
+            "required": true
           }
         ],
         "responses": {
@@ -79,8 +136,21 @@
     },
     "/recipes/{recipeId}": {
       "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Retrieves the recipe data for a given recipe id",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "recipeId",
             "in": "path",
@@ -106,8 +176,21 @@
     },
     "/recipes/{recipeId}/image": {
       "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Retrieves the image for a recipe",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "recipeId",
             "in": "path",
@@ -134,8 +217,21 @@
     },
     "/offers": {
       "post": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Submits a request for a new offer",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -166,8 +262,21 @@
     },
     "/offers/{offerId}": {
       "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "Retrieves the offer data for a given offer id",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "offerId",
             "in": "path",
@@ -193,8 +302,21 @@
     },
     "/offers/{offerId}/payment": {
       "post": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
         "description": "THIS ROUTE IS DEPRECTED AND WILL BE DELETED. DO NOT USE IT.",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "offerId",
             "in": "path",
@@ -221,7 +343,14 @@
     },
     "/users/{userId}": {
       "get": {
-        "description" : "Retrieves the user data for a given user id.",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the user data for a given user id.",
         "parameters": [
           {
             "in": "path",
@@ -248,7 +377,14 @@
     },
     "/users/{userId}/image": {
       "get": {
-        "description" : "Retrieves the user image for an user. The image is returned as a base64 encoded string.",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the user image for an user. The image is returned as a base64 encoded string.",
         "parameters": [
           {
             "in": "path",
@@ -309,7 +445,7 @@
         }
       }
     },
-    "Invoice" :{
+    "Invoice": {
       "type": "object",
       "properties": {
         "expiration": {
@@ -321,7 +457,7 @@
         }
       }
     },
-    "Transfer" :{
+    "Transfer": {
       "type": "object",
       "properties": {
         "address": {
@@ -382,7 +518,7 @@
           "type": "string"
         },
         "licensefee": {
-          "type" : "integer"
+          "type": "integer"
         },
         "thumbnail": {
           "type": "string",
