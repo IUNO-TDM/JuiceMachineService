@@ -13,10 +13,12 @@ var self = {
 self.LOG_LEVEL = 'debug';
 self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
+        PROTOCOL:'http',
         HOST: 'localhost',
         PORT: 3002
     },
     OAUTH_SERVER: {
+        PROTOCOL:'http',
         HOST: 'localhost',
         PORT: 3006
     }

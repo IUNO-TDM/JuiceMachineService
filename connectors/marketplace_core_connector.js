@@ -42,7 +42,7 @@ self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration,
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
@@ -82,7 +82,7 @@ self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
@@ -115,7 +115,7 @@ self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback)
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
@@ -151,7 +151,7 @@ self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
@@ -184,7 +184,7 @@ self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback
 
     var options = buildOptionsForRequest(
         'POST',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
@@ -237,7 +237,7 @@ self.getAllComponents = function (uuid, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
