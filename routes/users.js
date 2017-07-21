@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var oAuthServer = require('../connectors/auth_service_connector');
+var oAuthServer = require('../adapter/auth_service_adapter');
 var helper = require('../services/helper_service');
 var validate = require('express-jsonschema').validate;
 
