@@ -36,7 +36,7 @@ self.validateToken = function (userUUID, token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/tokeninfo',
@@ -71,7 +71,7 @@ self.getUserForId = function (userId, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/users/' + userId,
@@ -109,7 +109,7 @@ self.getImageForUser = function (userId, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/users/' + userId + '/image',

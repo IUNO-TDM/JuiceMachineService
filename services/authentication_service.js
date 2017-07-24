@@ -3,7 +3,7 @@
  */
 
 var logger = require('../global/logger');
-var authService= require('../connectors/auth_service_connector');
+var authService= require('../adapter/auth_service_adapter');
 var self = {};
 
 function getBearerTokenFromHeader(req) {
