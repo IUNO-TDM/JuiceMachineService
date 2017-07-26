@@ -52,8 +52,15 @@ self.validateToken = function (userUUID, token, callback) {
             return callback(err);
         }
 
-        isValid = tokenInfo.user.id === userUUID;
-        isValid = isValid && new Date(tokenInfo.accessTokenExpiresAt) > new Date();
+        isValid = true;
+        if(tokenInfo.user.id !== userUUID) {
+            logger.info('Invalid token: user uuid does not match');
+            isValid = false;
+        }
+        if(!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
+            logger.info('Invalid token: Accesstoken expired');
+            isValid = false;
+        }
 
         callback(err, isValid, tokenInfo)
     });
