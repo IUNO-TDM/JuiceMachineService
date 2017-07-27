@@ -40,7 +40,7 @@ self.oAuth = function(req, res, next) {
     try {
         var accessToken = getBearerTokenFromHeader(req);
 
-        authService.validateToken(req.query['userUUID'], accessToken, function(err, isValid, token){
+        authService.validateToken(accessToken, function(err, isValid, token){
             if (isValid) {
                 req.token = token;
                 next();

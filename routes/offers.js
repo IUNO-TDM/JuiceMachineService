@@ -14,7 +14,7 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 
     logger.debug(data);
 
-    marketplaceCore.createOfferForRequest(req.query['userUUID'], req.token.accessToken, data, function (err, offer) {
+    marketplaceCore.createOfferForRequest(req.token.user.id, req.token.accessToken, data, function (err, offer) {
         if (err) {
             next(err);
             return;
@@ -29,7 +29,7 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 
 router.get('/:id', function (req, res, next) {
 
-    marketplaceCore.getOfferForId(req.query['userUUID'], req.token.accessToken, req.params['id'], function (err, offer) {
+    marketplaceCore.getOfferForId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, offer) {
         if (err) {
             next(err);
             return;

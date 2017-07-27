@@ -24,7 +24,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
-self.validateToken = function (userUUID, token, callback) {
+self.validateToken = function (token, callback) {
     var isValid = false;
 
     if (typeof(callback) !== 'function') {
@@ -53,10 +53,6 @@ self.validateToken = function (userUUID, token, callback) {
         }
 
         isValid = true;
-        if(tokenInfo.user.id !== userUUID) {
-            logger.info('Invalid token: user uuid does not match');
-            isValid = false;
-        }
         if(!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
             logger.info('Invalid token: Accesstoken expired');
             isValid = false;
