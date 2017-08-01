@@ -211,7 +211,7 @@ self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
 
         var offer;
-        if (helper.isObject(jsonData)) {
+        if (!err && helper.isObject(jsonData)) {
             offer = new Offer().CreateFromCoreJSON(jsonData);
         }
 
