@@ -52,9 +52,14 @@ self.validateToken = function (token, callback) {
             return callback(err);
         }
 
+        if (!tokenInfo) {
+            logger.warn('[auth_service_adapter] missing token info in auth server response');
+            return callback(null, false);
+        }
+
         isValid = true;
         if(!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
-            logger.info('Invalid token: Accesstoken expired');
+            logger.info('[auth_service_adapter]Invalid token: Accesstoken expired');
             isValid = false;
         }
 
