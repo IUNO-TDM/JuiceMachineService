@@ -4,8 +4,9 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var validate = require('express-jsonschema').validate;
+var helper = require('../services/helper_service');
 
 
 router.get('/', validate({query: require('../schema/recipe_query_schema')}), function (req, res, next) {
@@ -15,22 +16,24 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
     var searchConfig = {
         createdAfter: req.query['after'],
         machineType: req.query['machine'],
-        ingredients: req.query['ingredients']
+        components: req.query['components']
     };
 
-    marketplaceCore.getAllRecipesForConfiguration(searchConfig, function (err, recipes) {
+    marketplaceCore.getAllRecipesForConfiguration(req.token.user.id, req.token.accessToken, searchConfig, function (err, recipes) {
 
         if (err) {
             next(err);
             return;
         }
 
+        recipes = helper.shuffleArray(recipes);
+
         res.json(recipes);
     });
 });
 
 router.get('/:id', function (req, res, next) {
-    marketplaceCore.getRecipeForId(req.params['id'], function (err, recipe) {
+    marketplaceCore.getRecipeForId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, recipe) {
         if (err) {
             next(err);
             return;
@@ -41,24 +44,30 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        res.json(recipe);
+        marketplaceCore.getComponentsForRecipeId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, components) {
+            if (!err && components) {
+                recipe.components = components;
+            }
+
+            res.json(recipe);
+        });
     });
 });
 
 router.get('/:id/image', function (req, res, next) {
-    marketplaceCore.getImageForRecipe(req.params['id'], function (err, image) {
+    marketplaceCore.getImageForRecipe(req.token.user.id, req.token.accessToken, req.params['id'], function (err, data) {
         if (err) {
             next(err);
             return;
         }
 
-        if (!image) {
+        if (!data) {
             res.sendStatus(404);
             return;
         }
 
-        res.set('Content-Type', 'image/jpg');
-        res.send(image);
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
     });
 });
 

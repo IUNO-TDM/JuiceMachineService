@@ -5,13 +5,13 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var oAuthServer = require('../adapter/auth_service_adapter');
 var helper = require('../services/helper_service');
 var validate = require('express-jsonschema').validate;
 
 router.get('/:id', function (req, res, next) {
 
-    marketplaceCore.getUserForId(req.params['id'], function (err, user) {
+    oAuthServer.getUserForId(req.params['id'], req.token.accessToken, function (err, user) {
         if (err) {
             next(err);
             return;
@@ -29,19 +29,19 @@ router.get('/:id', function (req, res, next) {
 
 router.get('/:id/image', function (req, res, next) {
 
-    marketplaceCore.getImageForUser(req.params['id'], function (err, image) {
+    oAuthServer.getImageForUser(req.params['id'], req.token.accessToken, function (err, data) {
         if (err) {
             next(err);
             return;
         }
 
-        if (!image) {
+        if (!data) {
             res.sendStatus(404);
             return;
         }
 
-        res.set('Content-Type', 'image/jpg');
-        res.send(image);
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
     });
 
 });

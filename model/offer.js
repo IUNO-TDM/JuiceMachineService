@@ -9,8 +9,16 @@ function Offer(id, invoice) {
     this.invoice = invoice;
 }
 
-
+/**
+ *
+ * @param jsonData
+ * @returns {*}
+ * @constructor
+ */
 Offer.prototype.CreateFromCoreJSON = function (jsonData) {
+    if (!jsonData) {
+        return null;
+    }
 
     var transfers = [];
     for (var key in jsonData.invoice.transfers) {
