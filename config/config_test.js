@@ -16,8 +16,8 @@ self.HOST_SETTINGS = {
     }
 };
 self.OAUTH_CREDENTIALS = {
-    CLIENT_ID: '210d760f-6222-4f70-8a3c-5d6c8b13ac74',
-    CLIENT_SECRET: 'fe685866-0966-40cc-92c9-004ed96d81f7'
+    CLIENT_ID: 'adb4c297-45bd-437e-ac90-9179eea41747',
+    CLIENT_SECRET: 'IsSecret'
 };
 
 module.exports = self;
