@@ -262,4 +262,31 @@ self.getAllComponents = function (uuid, accessToken, callback) {
 };
 
 //</editor-fold>
+
+self.getLicenseUpdate = function (cmSerial, context, accessToken, callback) {
+    if (typeof(callback) !== 'function') {
+        return logger.info('[marketplace_core_adapter] Callback not registered');
+    }
+
+    if (!cmSerial || !context) {
+        return logger.info('[marketplace_core_adapter] missing function arguments');
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/cmdongle/' + cmSerial + '/update',
+        {}
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+        callback(err, jsonData.RAU);
+    });
+
+};
 module.exports = self;

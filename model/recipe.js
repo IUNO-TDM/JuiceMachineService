@@ -50,7 +50,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['createdat'], //createdAt
         jsonData['updatedat'], //updatedAt
         null, //rating TODO: Rating still missing
-        jsonData['retailprice'], //retailPrice TODO: Calculate retail price
+        jsonData['retailprice'], //retailPrice
         null, //productId TODO: Is this id needed?
         jsonData['technologydata'],//program
         component
