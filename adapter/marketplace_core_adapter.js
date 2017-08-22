@@ -263,12 +263,12 @@ self.getAllComponents = function (uuid, accessToken, callback) {
 
 //</editor-fold>
 
-self.getLicenseUpdate = function (cmSerial, context, accessToken, callback) {
+self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[marketplace_core_adapter] Callback not registered');
     }
 
-    if (!cmSerial || !context) {
+    if (!hsmId || !context) {
         return logger.info('[marketplace_core_adapter] missing function arguments');
     }
 
@@ -277,15 +277,26 @@ self.getLicenseUpdate = function (cmSerial, context, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/cmdongle/' + cmSerial + '/update',
-        {}
+        '/cmdongle/' + hsmId + '/update',
+        {
+            userUUID: uuid
+        }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
+
+    options.body = {
+        RAC: context
+    };
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        callback(err, jsonData.RAU);
+        var rau = null;
+        if (jsonData) {
+            rau = jsonData['RAU'];
+        }
+
+        callback(err, rau);
     });
 
 };

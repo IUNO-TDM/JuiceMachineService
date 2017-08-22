@@ -5,16 +5,16 @@ const validate = require('express-jsonschema').validate;
 const helper = require('../services/helper_service');
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 
-router.post('/:cmSerial/update', validate({
+router.post('/:hsmId/update', validate({
     query: require('../schema/cmdongle_schema').LicenseUpdate_Query,
     body: require('../schema/cmdongle_schema').LicenseUpdate_Body
 }), function (req, res, next) {
 
 
-    const cmSerial = req.param('cmSerial');
+    const hsmId = req.params['hsmId'];
     const racBuffer = req.body.RAC;
 
-    marketplaceCore.getLicenseUpdate(cmSerial, racBuffer, function (err, rauBuffer) {
+    marketplaceCore.getLicenseUpdate(hsmId, racBuffer, req.token.user.id, req.token.accessToken, function (err, rauBuffer) {
         if (err) {
             return next(err);
         }
