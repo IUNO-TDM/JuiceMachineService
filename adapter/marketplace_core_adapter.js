@@ -292,12 +292,54 @@ self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
 
         var rau = null;
+        var isOutOfDate = false;
         if (jsonData) {
             rau = jsonData['RAU'];
+            isOutOfDate = jsonData['isOutOfDate']
         }
 
-        callback(err, rau);
+        callback(err, rau, isOutOfDate);
     });
 
 };
+
+self.confirmLicenseUpdate = function(hsmId, context, uuid, callback) {
+    if (typeof(callback) !== 'function') {
+        return logger.info('[marketplace_core_adapter] Callback not registered');
+    }
+
+    if (!hsmId || !context) {
+        return logger.info('[marketplace_core_adapter] missing function arguments');
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/cmdongle/' + hsmId + '/update/confirm',
+        {
+            userUUID: uuid
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    options.body = {
+        RAC: context
+    };
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+        var rau = null;
+        var isOutOfDate = false;
+        if (jsonData) {
+            rau = jsonData['RAU'];
+            isOutOfDate = jsonData['isOutOfDate']
+        }
+
+        callback(err, rau, isOutOfDate);
+    });
+};
+
 module.exports = self;
