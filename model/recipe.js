@@ -4,7 +4,7 @@
 
 var Component = require('./component');
 
-function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productId, program, components) {
+function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productCode, program, components) {
 
 
     this.id = id;
@@ -18,7 +18,7 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.updatedAt = updatedAt;
     this.rating = rating;
     this.retailPrice = retailPrice;
-    this.productId = productId;
+    this.productCode = productCode;
     this.program = program;
     this.components = components;
 
@@ -51,7 +51,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['updatedat'], //updatedAt
         null, //rating TODO: Rating still missing
         jsonData['retailprice'], //retailPrice
-        null, //productId TODO: Is this id needed?
+        jsonData['productcode'],
         jsonData['technologydata'],//program
         component
     )

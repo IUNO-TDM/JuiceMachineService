@@ -303,7 +303,7 @@ self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
 
 };
 
-self.confirmLicenseUpdate = function(hsmId, context, uuid, callback) {
+self.confirmLicenseUpdate = function(hsmId, context, uuid, accessToken, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[marketplace_core_adapter] Callback not registered');
     }
