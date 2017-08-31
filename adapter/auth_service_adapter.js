@@ -59,7 +59,7 @@ self.validateToken = function (token, callback) {
 
         isValid = true;
         if(!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
-            logger.info('[auth_service_adapter]Invalid token: Accesstoken expired');
+            logger.info('[auth_service_adapter] Invalid token: Accesstoken expired');
             isValid = false;
         }
 
