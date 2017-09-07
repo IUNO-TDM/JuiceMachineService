@@ -10,7 +10,7 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.id = id;
     this.title = title;
     this.description = description;
-    this.licencefee = licenseFee;
+    this.licensefee = licenseFee;
     this.thumbnail = thumbnail;
     this.imageRef = imageRef;
     this.authorId = authorId;
