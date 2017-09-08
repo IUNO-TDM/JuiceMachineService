@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var authentication = require('./services/authentication_service');
+var validate = require('express-jsonschema').validate;
 
 
 var app = express();
@@ -15,11 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(validate({query: require('./schema/oauth_schema').AccessToken}), authentication.oAuth);
+
 // Load all routes
 app.use('/recipes', require('./routes/recipes'));
 app.use('/offers', require('./routes/offers'));
 app.use('/users', require('./routes/users'));
 app.use('/components', require('./routes/components'));
+app.use('/cmdongle', require('./routes/cmdongle'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

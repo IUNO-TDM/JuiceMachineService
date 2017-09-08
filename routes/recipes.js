@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var validate = require('express-jsonschema').validate;
 var helper = require('../services/helper_service');
 
@@ -16,10 +16,10 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
     var searchConfig = {
         createdAfter: req.query['after'],
         machineType: req.query['machine'],
-        ingredients: req.query['ingredients']
+        components: req.query['components']
     };
 
-    marketplaceCore.getAllRecipesForConfiguration(searchConfig, function (err, recipes) {
+    marketplaceCore.getAllRecipesForConfiguration(req.token.user.id, req.token.accessToken, searchConfig, function (err, recipes) {
 
         if (err) {
             next(err);
@@ -33,7 +33,7 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
 });
 
 router.get('/:id', function (req, res, next) {
-    marketplaceCore.getRecipeForId(req.params['id'], function (err, recipe) {
+    marketplaceCore.getRecipeForId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, recipe) {
         if (err) {
             next(err);
             return;
@@ -44,7 +44,7 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
-        marketplaceCore.getComponentsForRecipeId(req.params['id'], function (err, components) {
+        marketplaceCore.getComponentsForRecipeId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, components) {
             if (!err && components) {
                 recipe.components = components;
             }
@@ -55,7 +55,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.get('/:id/image', function (req, res, next) {
-    marketplaceCore.getImageForRecipe(req.params['id'], function (err, data) {
+    marketplaceCore.getImageForRecipe(req.token.user.id, req.token.accessToken, req.params['id'], function (err, data) {
         if (err) {
             next(err);
             return;

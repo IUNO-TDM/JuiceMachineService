@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var validate = require('express-jsonschema').validate;
 
 
@@ -14,10 +14,9 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 
     logger.debug(data);
 
-    marketplaceCore.createOfferForRequest(data, function (err, offer) {
+    marketplaceCore.createOfferForRequest(req.token.user.id, req.token.accessToken, data, function (err, offer) {
         if (err) {
-            next(err);
-            return;
+            return next(err);
         }
 
         var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -29,7 +28,7 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 
 router.get('/:id', function (req, res, next) {
 
-    marketplaceCore.getOfferForId(req.params['id'], function (err, offer) {
+    marketplaceCore.getOfferForId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, offer) {
         if (err) {
             next(err);
             return;

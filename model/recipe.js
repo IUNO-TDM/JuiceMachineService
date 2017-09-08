@@ -4,13 +4,13 @@
 
 var Component = require('./component');
 
-function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productId, program, components) {
+function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productCode, program, components) {
 
 
     this.id = id;
     this.title = title;
     this.description = description;
-    this.licencefee = licenseFee;
+    this.licensefee = licenseFee;
     this.thumbnail = thumbnail;
     this.imageRef = imageRef;
     this.authorId = authorId;
@@ -18,13 +18,22 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.updatedAt = updatedAt;
     this.rating = rating;
     this.retailPrice = retailPrice;
-    this.productId = productId;
+    this.productCode = productCode;
     this.program = program;
     this.components = components;
 
 }
 
+/**
+ *
+ * @param jsonData
+ * @returns {*}
+ * @constructor
+ */
 Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
+    if (!jsonData) {
+        return null;
+    }
     var component = [];
     for (var key in jsonData['componentswithattribute']) {
         component.push(new Component().CreateComponentFromJSON(jsonData['componentswithattribute'][key]));
@@ -41,8 +50,8 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['createdat'], //createdAt
         jsonData['updatedat'], //updatedAt
         null, //rating TODO: Rating still missing
-        jsonData['retailprice'], //retailPrice TODO: Calculate retail price
-        null, //productId TODO: Is this id needed?
+        jsonData['retailprice'], //retailPrice
+        jsonData['productcode'],
         jsonData['technologydata'],//program
         component
     )

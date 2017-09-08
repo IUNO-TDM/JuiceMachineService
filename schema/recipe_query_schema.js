@@ -10,7 +10,7 @@ var RecipeQuerySchema = {
             format: ' date-time',
             required: false
         },
-        ingredients: {
+        components: {
             type: 'array',
             items: {
                 type: 'string'

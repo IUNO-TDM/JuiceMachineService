@@ -1,29 +1,118 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.1.2",
+    "version": "1.0.0",
     "title": "JuiceMachineService"
   },
+  "host": "localhost:3001",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "TDM_Auth": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "http://localhost:3005/oauth/authorise",
+      "tokenUrl": "http://localhost:3006/oauth/token",
+      "scopes": {
+        "default": "Undefined",
+        "dashboard": "view dashboard",
+        "createRecipe": "create a recipe",
+        "viewRecipe": "view a recipe",
+        "viewSecureRecipe": "view a secure recipe",
+        "editRecipe": "edit a recipe",
+        "editSecureRecipe": "edit a secure recipe",
+        "viewUserProfile": "view the user profile",
+        "editUserProfile": "edit user profile",
+        "admin": "admin ui"
+      }
+    }
+  },
   "paths": {
-    "/recipes": {
+    "/components": {
       "get": {
-        "description": "gets all recipes",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves a list of possible components (aka ingredients). The components can then be used to configure the machine and request a list of recipes.",
         "parameters": [
           {
-            "name": "createdAfter",
+            "name": "userUUID",
             "in": "query",
-            "description": "UTC Date-Time specifying the oldest created date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Component"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves a list of recipes from the server. The list is filtered by the given query parameters. Only recipes are returned, that can be produced by the specified ingredients. The order of the recipe items is totaly random.",
+        "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "description": "THIS PARAMETER IS CURRENTLY NOT BEEING USED",
             "required": false,
             "type": "string"
           },
           {
-            "name": "ingredients",
+            "name": "machine",
             "in": "query",
-            "description": "Array with ingredient ids for possible ingredients.",
+            "description": "THIS PARAMETER IS CURRENTLY NOT BEEING USED",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "components",
+            "in": "query",
+            "description": "Array with components (aka ingredients) ids for possible ingredients. Only recipes are returned that can be produced by the given ingredients.",
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -36,6 +125,9 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -44,8 +136,21 @@
     },
     "/recipes/{recipeId}": {
       "get": {
-        "description": "The the recipe for an id",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the recipe data for a given recipe id",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "recipeId",
             "in": "path",
@@ -61,7 +166,7 @@
             }
           },
           "404": {
-            "description": "No recipe found"
+            "description": "No recipe for given id found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -71,8 +176,21 @@
     },
     "/recipes/{recipeId}/image": {
       "get": {
-        "description": "The image for a specific recipe",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the image for a recipe",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "recipeId",
             "in": "path",
@@ -82,22 +200,38 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successful response",
             "schema": {
               "type": "string",
-              "format" : "byte"
+              "format": "byte"
             }
           },
           "404": {
-            "description": "Recipe not found"
+            "description": "No recipe for given id found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/offers": {
       "post": {
-        "description": "Request a new offer",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Submits a request for a new offer",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -128,8 +262,21 @@
     },
     "/offers/{offerId}": {
       "get": {
-        "description": "Get a offer for a offer id",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the offer data for a given offer id",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "offerId",
             "in": "path",
@@ -148,18 +295,28 @@
             "description": "The offer could not be found"
           },
           "500": {
-            "description": "Something went wrong with the request",
-            "schema": {
-              "type": "string"
-            }
+            "description": "Something went wrong with the request"
           }
         }
       }
     },
     "/offers/{offerId}/payment": {
       "post": {
-        "description": "the way to send the message, that the payment has been sent by the client",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "THIS ROUTE IS DEPRECTED AND WILL BE DELETED. DO NOT USE IT.",
         "parameters": [
+          {
+            "name": "userUUID",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "offerId",
             "in": "path",
@@ -184,43 +341,16 @@
         }
       }
     },
-    "/licences/{hsmId}": {
-      "get": {
-        "description": "Gets a license update for an HSM if available, maybe opened as websocket?!",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "hsmId",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "rauId",
-            "description": "the id of the newesr RAU file the client has",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/License"
-            }
-          },
-          "204": {
-            "description": "No Data, because there was no new RAU for this HSM"
-          },
-          "404": {
-            "description": "This HSM is unknown"
-          }
-        }
-      }
-    },
     "/users/{userId}": {
       "get": {
-        "description" : "Get the user details for a specified identifier.",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the user data for a given user id.",
         "parameters": [
           {
             "in": "path",
@@ -238,13 +368,23 @@
           },
           "404": {
             "description": "This user is unknown"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/users/{userId}/image": {
       "get": {
-        "description" : "Get the profile image for a specific user.",
+        "security": [
+          {
+            "TDM_Auth": [
+              "default"
+            ]
+          }
+        ],
+        "description": "Retrieves the user image for an user. The image is returned as a base64 encoded string.",
         "parameters": [
           {
             "in": "path",
@@ -258,45 +398,20 @@
             "description": "OK",
             "schema": {
               "type": "string",
-              "format" : "byte"
+              "format": "byte"
             }
           },
           "404": {
-            "description": "User not found"
+            "description": "This user is unknown"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     }
   },
   "definitions": {
-    "License": {
-      "type": "object",
-      "properties": {
-        "rauString": {
-          "type": "string",
-          "format": "byte"
-        },
-        "offers": {
-          "description": "The Offer Ids which are included in this license update",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "Price": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "type": "number",
-          "format": "double"
-        },
-        "currency": {
-          "type": "string"
-        }
-      }
-    },
     "OfferRequest": {
       "type": "object",
       "properties": {
@@ -330,7 +445,7 @@
         }
       }
     },
-    "Invoice" :{
+    "Invoice": {
       "type": "object",
       "properties": {
         "expiration": {
@@ -342,7 +457,7 @@
         }
       }
     },
-    "Transfer" :{
+    "Transfer": {
       "type": "object",
       "properties": {
         "address": {
@@ -379,6 +494,17 @@
         }
       }
     },
+    "Component": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "Recipe": {
       "type": "object",
       "properties": {
@@ -392,7 +518,7 @@
           "type": "string"
         },
         "licensefee": {
-          "$ref": "#/definitions/Price"
+          "type": "integer"
         },
         "thumbnail": {
           "type": "string",
@@ -406,25 +532,23 @@
         "authorId": {
           "type": "string"
         },
-        "createdAt": {
-          "type": "string",
-          "format": "date"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date"
-        },
         "rating": {
           "$ref": "#/definitions/Rating"
         },
         "retailPrice": {
-          "$ref": "#/definitions/Price"
+          "type": "integer"
         },
         "productId": {
           "type": "string"
         },
         "program": {
           "type": "string"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Component"
+          }
         }
       }
     },
@@ -469,7 +593,7 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "ingredient": {
+                    "component": {
                       "type": "string"
                     },
                     "amount": {
