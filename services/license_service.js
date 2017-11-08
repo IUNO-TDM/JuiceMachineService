@@ -1,5 +1,8 @@
 /**
  * Created by goergch on 09.03.17.
+ *
+ * This is a websocket client that registers on rooms on the marketplace core.
+ *
  */
 
 const EventEmitter = require('events').EventEmitter;
@@ -38,12 +41,18 @@ license_service.socket.on('disconnect', function () {
     logger.debug("disconnected from license SocketIO at Marketplace");
 });
 
+/**
+ * updateAvailable events are directly passed to the registered clients. Via the license service.
+ */
 license_service.socket.on('updateAvailable', function (data) {
     license_service.emit('updateAvailable', data.offerId, data.hsmId);
 });
 
 
 license_service.registerUpdates = function (hsmId) {
+    /**
+     * The subscriptions for license updates are separated by the hsmId.
+     */
     if (!hsmId) {
         return;
     }

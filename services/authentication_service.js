@@ -3,7 +3,7 @@
  */
 
 var logger = require('../global/logger');
-var authService= require('../adapter/auth_service_adapter');
+var authService = require('../adapter/auth_service_adapter');
 var self = {};
 
 function getBearerTokenFromHeader(req) {
@@ -35,12 +35,11 @@ function unauthorized(res) {
 }
 
 
-self.oAuth = function(req, res, next) {
-
+self.oAuth = function (req, res, next) {
     try {
         var accessToken = getBearerTokenFromHeader(req);
 
-        authService.validateToken(accessToken, function(err, isValid, token){
+        authService.validateToken(accessToken, function (err, isValid, token) {
             if (isValid) {
                 req.token = token;
                 next();
@@ -55,10 +54,27 @@ self.oAuth = function(req, res, next) {
         logger.warn(ex);
         return unauthorized(res);
     }
+};
 
+self.ws_oAuth = function (socket, next) {
+    try {
+        var accessToken = getBearerTokenFromHeader(socket.handshake);
 
+        authService.validateToken(accessToken, function (err, isValid, token) {
+            if (isValid) {
+                next();
+            }
+            else {
+                return next(new Error('WWW-Authenticate: Bearer realm=Valid oauth token required'));
+            }
+        })
 
+    }
+    catch (ex) {
+        logger.warn(ex);
 
+        return next(new Error('WWW-Authenticate: Bearer realm=Valid oauth token required'));
+    }
 };
 
 module.exports = self;

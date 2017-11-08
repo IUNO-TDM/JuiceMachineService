@@ -1,8 +1,15 @@
 /**
  * Created by beuttlerma on 08.02.17.
+ *
+ * Socket IO Server that provides a WS interface to subscribe on license updates.
+ *
+ * The client can a join a room, where the hsmId (cmdongleid) is used as room identifier.
+ * After joining a certain room, the client gets a 'updateAvailable' event each time a new license update is available
+ * for the subscribed hsmId.
  */
 
-var logger = require('../global/logger');
+const logger = require('../global/logger');
+const authentication = require('../services/authentication_service');
 const license_service = require('../services/license_service');
 
 function onIOLicenseConnect(socket) {
@@ -25,6 +32,8 @@ function onIOLicenseConnect(socket) {
 }
 
 module.exports = function (io) {
+    // Enable bearer token security for websocket server
+    io.use(authentication.ws_oAuth);
 
     var namespace = io.of('/licenses');
     namespace.on('connection', onIOLicenseConnect);
