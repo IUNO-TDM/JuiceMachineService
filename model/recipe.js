@@ -35,8 +35,8 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         return null;
     }
     var component = [];
-    for (var key in jsonData['componentswithattribute']) {
-        component.push(new Component().CreateComponentFromJSON(jsonData['componentswithattribute'][key]));
+    for (var key in jsonData['componentlist']) {
+        component.push(new Component().CreateComponentFromJSON(jsonData['componentlist'][key]));
     }
 
     return new Recipe(
