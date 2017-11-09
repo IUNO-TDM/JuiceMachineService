@@ -58,7 +58,7 @@ self.validateToken = function (token, callback) {
         }
 
         isValid = true;
-        if(!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
+        if (!(new Date(tokenInfo.accessTokenExpiresAt) > new Date())) {
             logger.info('[auth_service_adapter] Invalid token: Accesstoken expired');
             isValid = false;
         }
@@ -83,9 +83,7 @@ self.getUserForId = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/users/' + userId,
-        {
-
-        }
+        {}
     );
 
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -121,9 +119,7 @@ self.getImageForUser = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/users/' + userId + '/image',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
     options.encoding = null;
@@ -136,6 +132,66 @@ self.getImageForUser = function (userId, accessToken, callback) {
             contentType: r ? r.headers['content-type'] : null
         });
     });
+};
+
+self.getClientAccessToken = function (callback) {
+
+    // Only request new access token if the old has expired
+    if (self.token && new Date(self.token.accessTokenExpiresAt) > new Date()) {
+        return callback(null, self.token);
+    }
+
+    logger.info('Requesting new access token from the oauth server');
+
+    if (typeof(callback) !== 'function') {
+        callback = function (err, data) {
+            logger.warn('Callback not handled by caller');
+        };
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/oauth/token',
+        {}
+    );
+
+    options.form = {
+        grant_type: 'client_credentials'
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+            return;
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        self.token = jsonData.access_token;
+        callback(null, self.token);
+    });
+
+};
+
+self.invalidateToken = function () {
+
+    self.token = null;
+
 };
 
 module.exports = self;
