@@ -126,6 +126,7 @@ logger.trace = function (msg) {
 logger.logRequestAndResponse = function (err, options, res, data) {
 
     var loggerOutput = {};
+    var e  = null;
 
     if (options) {
         loggerOutput.options = options;
@@ -143,18 +144,20 @@ logger.logRequestAndResponse = function (err, options, res, data) {
     if (err) {
         loggerOutput.err = err;
         logger.crit(loggerOutput);
-        return new Error(err);
+        e = new Error(JSON.stringify(loggerOutput, null, 4));
+        e.statusCode = res.statusCode;
     }
     else if (res && res.statusCode > 201) {
         logger.warn(loggerOutput);
-        return new Error(res.statusMessage);
+        e = new Error(JSON.stringify(loggerOutput, null, 4));
+        e.statusCode = res.statusCode;
     }
     else {
         logger.debug(loggerOutput);
     }
 
 
-    return null;
+    return e;
 };
 
 module.exports = logger;
