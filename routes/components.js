@@ -10,7 +10,7 @@ var marketplaceCore = require('../adapter/marketplace_core_adapter');
 
 router.get('/', function (req, res, next) {
 
-    marketplaceCore.getAllComponents(req.token.user.id, req.token.accessToken, function (err, components) {
+    marketplaceCore.getAllComponents(req.token.accessToken, function (err, components) {
 
         if (err) {
             next(err);

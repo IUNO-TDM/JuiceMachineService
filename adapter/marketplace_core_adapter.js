@@ -31,7 +31,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 //<editor-fold desc="Recipes">
-self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration, callback) {
+self.getAllRecipesForConfiguration = function (accessToken, configuration, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -47,7 +47,6 @@ self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            userUUID: uuid,
             components: configuration.components
         }
     );
@@ -72,7 +71,7 @@ self.getAllRecipesForConfiguration = function (uuid, accessToken, configuration,
 };
 
 
-self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
+self.getRecipeForId = function (accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -87,7 +86,7 @@ self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -105,7 +104,7 @@ self.getRecipeForId = function (uuid, accessToken, recipeId, callback) {
     });
 };
 
-self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback) {
+self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -120,7 +119,7 @@ self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback)
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
-            userUUID: uuid
+
         }
     );
 
@@ -141,7 +140,7 @@ self.getComponentsForRecipeId = function (uuid, accessToken, recipeId, callback)
     });
 };
 
-self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
+self.getImageForRecipe = function (accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -156,7 +155,7 @@ self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -174,7 +173,7 @@ self.getImageForRecipe = function (uuid, accessToken, recipeId, callback) {
 
 //</editor-fold>
 //<editor-fold desc="Offer">
-self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback) {
+self.createOfferForRequest = function (accessToken, offerRequest, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -189,7 +188,7 @@ self.createOfferForRequest = function (uuid, accessToken, offerRequest, callback
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -227,7 +226,7 @@ self.getOfferForId = function (uuid, accessToken, offerId, callback) {
 //</editor-fold>
 //<editor-fold desc="User">
 
-self.getAllComponents = function (uuid, accessToken, callback) {
+self.getAllComponents = function (accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -242,7 +241,7 @@ self.getAllComponents = function (uuid, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -263,7 +262,7 @@ self.getAllComponents = function (uuid, accessToken, callback) {
 
 //</editor-fold>
 
-self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
+self.getLicenseUpdate = function (hsmId, context, accessToken, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[marketplace_core_adapter] Callback not registered');
     }
@@ -279,7 +278,7 @@ self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/cmdongle/' + hsmId + '/update',
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -303,7 +302,7 @@ self.getLicenseUpdate = function (hsmId, context, uuid, accessToken, callback) {
 
 };
 
-self.confirmLicenseUpdate = function(hsmId, context, uuid, accessToken, callback) {
+self.confirmLicenseUpdate = function(hsmId, context, accessToken, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[marketplace_core_adapter] Callback not registered');
     }
@@ -319,7 +318,7 @@ self.confirmLicenseUpdate = function(hsmId, context, uuid, accessToken, callback
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/cmdongle/' + hsmId + '/update/confirm',
         {
-            userUUID: uuid
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;

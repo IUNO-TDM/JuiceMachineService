@@ -14,7 +14,7 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
 
     logger.debug(data);
 
-    marketplaceCore.createOfferForRequest(req.token.user.id, req.token.accessToken, data, function (err, offer) {
+    marketplaceCore.createOfferForRequest(req.token.accessToken, data, function (err, offer) {
         if (err) {
             return next(err);
         }
