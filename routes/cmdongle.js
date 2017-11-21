@@ -12,7 +12,7 @@ router.post('/:hsmId/update', validate({
     const hsmId = req.params['hsmId'];
     const racBuffer = req.body.RAC;
 
-    marketplaceCore.getLicenseUpdate(hsmId, racBuffer, req.token.user.id, req.token.accessToken, function (err, rauBuffer, isOutOfDate) {
+    marketplaceCore.getLicenseUpdate(hsmId, racBuffer, req.token.accessToken, function (err, rauBuffer, isOutOfDate) {
         if (err) {
             return next(err);
         }
@@ -34,7 +34,7 @@ router.post('/:hsmId/update/confirm', validate({
     const hsmId = req.params['hsmId'];
     const racBuffer = req.body.RAC;
 
-    marketplaceCore.confirmLicenseUpdate(hsmId, racBuffer, req.token.user.id, req.token.accessToken, function (err) {
+    marketplaceCore.confirmLicenseUpdate(hsmId, racBuffer, req.token.accessToken, function (err) {
         if (err) {
             return next(err);
         }

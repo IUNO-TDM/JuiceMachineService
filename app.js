@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var authentication = require('./services/authentication_service');
 var validate = require('express-jsonschema').validate;
 
-
 var app = express();
 
 // basic setup
