@@ -15,7 +15,21 @@ const authServer = require('../adapter/auth_service_adapter');
 var LicenseService = function () {
     const self = this;
     this.registeredRooms = {};
-
+    this.refreshTokenAndReconnect = function () {
+        authServer.invalidateToken();
+        authServer.getClientAccessToken(function (err, token) {
+            if (err) {
+                logger.warn(err);
+            }
+            if (self.socket) {
+                self.socket.io.opts.extraHeaders = {
+                    Authorization: 'Bearer ' + (token ? token.accessToken : '')
+                };
+                self.socket.io.disconnect();
+                self.socket.connect();
+            }
+        });
+    };
 };
 
 const license_service = new LicenseService();
