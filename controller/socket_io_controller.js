@@ -32,10 +32,10 @@ function onIOLicenseConnect(socket) {
 }
 
 module.exports = function (io) {
-    // Enable bearer token security for websocket server
-    io.use(authentication.ws_oAuth);
-
     var namespace = io.of('/licenses');
+
+    // Enable bearer token security for websocket server
+    namespace.use(authentication.ws_oAuth);
     namespace.on('connection', onIOLicenseConnect);
     registerLicenseEvents(namespace);
 
