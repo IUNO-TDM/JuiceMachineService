@@ -12,6 +12,15 @@ var app = express();
 // basic setup
 app.use(logger('dev'));
 
+// Accept JSON only
+app.use('/', function (req, res, next) {
+    if (!req.is('application/json')) {
+        return res.status(400).send('content-type must be application/json');
+    }
+
+    next();
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
