@@ -14,15 +14,17 @@ app.use(logger('dev'));
 
 // Accept JSON only
 app.use('/', function (req, res, next) {
-    if (!req.is('application/json')) {
-        return res.status(400).send('content-type must be application/json');
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+        if (!(req.is('application/json'))) {
+            return res.status(400).send('content-type not accepted');
+        }
     }
 
     next();
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use(validate({query: require('./schema/oauth_schema').AccessToken}), authentication.oAuth);
@@ -35,7 +37,7 @@ app.use('/components', require('./routes/components'));
 app.use('/cmdongle', require('./routes/cmdongle'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
@@ -44,7 +46,7 @@ app.use(function(req, res, next) {
 // error handler
 
 // Custom validation error
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
 
     var responseData;
 
