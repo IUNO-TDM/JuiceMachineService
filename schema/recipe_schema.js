@@ -22,7 +22,7 @@ self.Recipe_Query = {
             additionalItems: false
         }
     },
-    required: ['createdAfter', 'components'],
+    required: ['components'],
     additionalProperties: false
 };
 

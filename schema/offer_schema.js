@@ -32,7 +32,7 @@ self.OfferRequest_Body = {
             pattern: '[3-9]-[0-9]{7}$'
         }
     },
-    required: ['items', 'hsmid'],
+    required: ['items', 'hsmId'],
     additionalProperties: false
 };
 
