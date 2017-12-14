@@ -1,19 +1,26 @@
 /**
  * Created by beuttlerma on 07.02.17.
  */
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var marketplaceCore = require('../adapter/marketplace_core_adapter');
-var validate = require('express-jsonschema').validate;
-var helper = require('../services/helper_service');
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const marketplaceCore = require('../adapter/marketplace_core_adapter');
+const helper = require('../services/helper_service');
+
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/recipe_schema');
 
 
-router.get('/', validate({query: require('../schema/recipe_query_schema')}), function (req, res, next) {
+router.get('/', validate({
+    query: validation_schema.Recipe_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
 
     logger.debug(req.query);
 
-    var searchConfig = {
+    const searchConfig = {
         createdAfter: req.query['after'],
         machineType: req.query['machine'],
         components: req.query['components']
@@ -32,7 +39,10 @@ router.get('/', validate({query: require('../schema/recipe_query_schema')}), fun
     });
 });
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     marketplaceCore.getRecipeForId(req.token.accessToken, req.params['id'], function (err, recipe) {
         if (err) {
             next(err);
@@ -54,7 +64,10 @@ router.get('/:id', function (req, res, next) {
     });
 });
 
-router.get('/:id/image', function (req, res, next) {
+router.get('/:id/image', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     marketplaceCore.getImageForRecipe(req.token.accessToken, req.params['id'], function (err, data) {
         if (err) {
             next(err);

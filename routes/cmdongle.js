@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const validate = require('express-jsonschema').validate;
+
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/cmdongle_schema');
+
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 
 router.post('/:hsmId/update', validate({
-    query: require('../schema/cmdongle_schema').LicenseUpdate_Query,
-    body: require('../schema/cmdongle_schema').LicenseUpdate_Body
+    query: validation_schema.Empty,
+    body: validation_schema.LicenseUpdate_Body
 }), function (req, res, next) {
 
 
@@ -26,8 +31,8 @@ router.post('/:hsmId/update', validate({
 });
 
 router.post('/:hsmId/update/confirm', validate({
-    query: require('../schema/cmdongle_schema').LicenseUpdate_Query,
-    body: require('../schema/cmdongle_schema').LicenseUpdate_Body
+    query: validation_schema.Empty,
+    body: validation_schema.LicenseUpdate_Body
 }), function (req, res, next) {
 
 

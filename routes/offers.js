@@ -2,15 +2,22 @@
  * Created by beuttlerma on 08.02.17.
  */
 
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var marketplaceCore = require('../adapter/marketplace_core_adapter');
-var validate = require('express-jsonschema').validate;
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const marketplaceCore = require('../adapter/marketplace_core_adapter');
+
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/offer_schema');
 
 
-router.post('/', validate({body: require('../schema/offer_request_schema')}), function (req, res, next) {
-    var data = req.body;
+router.post('/', validate({
+    body: validation_schema.OfferRequest_Body,
+    query: validation_schema.Empty
+}), function (req, res, next) {
+    const data = req.body;
 
     logger.debug(data);
 
@@ -19,14 +26,17 @@ router.post('/', validate({body: require('../schema/offer_request_schema')}), fu
             return next(err);
         }
 
-        var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
         res.set('Location', fullUrl + '/' + offer.id);
         res.status(201);
         res.json(offer);
     });
 });
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', validate({
+    body: validation_schema.Empty,
+    query: validation_schema.Empty
+}), function (req, res, next) {
 
     marketplaceCore.getOfferForId(req.token.user.id, req.token.accessToken, req.params['id'], function (err, offer) {
         if (err) {
