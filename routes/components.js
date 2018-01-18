@@ -2,13 +2,20 @@
  * Created by beuttlerma on 28.03.17.
  */
 
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var marketplaceCore = require('../adapter/marketplace_core_adapter');
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const marketplaceCore = require('../adapter/marketplace_core_adapter');
 
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/component_schema');
 
-router.get('/', function (req, res, next) {
+router.get('/', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
 
     marketplaceCore.getAllComponents(req.token.accessToken, function (err, components) {
 

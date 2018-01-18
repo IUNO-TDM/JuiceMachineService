@@ -1,22 +1,28 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var authentication = require('./services/authentication_service');
-var validate = require('express-jsonschema').validate;
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const queryParser = require('express-query-int');
+const authentication = require('./services/authentication_service');
+const contentTypeValidation = require('./services/content_type_validation');
 
-var app = express();
+const app = express();
 
 // basic setup
 app.use(logger('dev'));
 
+// Accept JSON only
+app.use('/', contentTypeValidation);
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(queryParser());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use(validate({query: require('./schema/oauth_schema').AccessToken}), authentication.oAuth);
+//validated access token
+app.use(authentication.oAuth);
 
 // Load all routes
 app.use('/recipes', require('./routes/recipes'));
@@ -26,7 +32,7 @@ app.use('/components', require('./routes/components'));
 app.use('/cmdongle', require('./routes/cmdongle'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
@@ -35,7 +41,7 @@ app.use(function(req, res, next) {
 // error handler
 
 // Custom validation error
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
 
     var responseData;
 
@@ -54,11 +60,27 @@ app.use(function(err, req, res, next) {
             validations: err.validations  // All of your validation information
         };
 
-        res.json(responseData);
-    } else {
-        // pass error to next error middleware handler
-        next(err);
+        return res.json(responseData);
     }
+
+    if (err.name === 'JsonSchemaValidationError') {
+        // Log the error however you please
+        console.log(JSON.stringify(err.validationErrors));
+
+        // Set a bad request http response status or whatever you want
+        res.status(400);
+
+        // Format the response body however you want
+        responseData = {
+            statusText: 'Bad Request',
+            jsonSchemaValidation: true,
+            validations: err.validationErrors  // All of your validation information
+        };
+
+        return res.json(responseData);
+    }
+
+    next(err);
 });
 
 
