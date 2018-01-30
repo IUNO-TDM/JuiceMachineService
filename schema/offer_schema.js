@@ -25,7 +25,8 @@ self.OfferRequest_Body = {
                 required: ['recipeId', 'amount'],
                 additionalProperties: false
             },
-            additionalItems: false
+            additionalItems: false,
+            minItems: 1
         },
         hsmId: {
             type: 'string',
