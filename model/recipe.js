@@ -47,7 +47,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['licensefee'], //licencefee
         jsonData['technologydatathumbnail'], //thumbnail
         null, //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
-        jsonData['backgroundColor'],
+        jsonData['backgroundcolor'],
         jsonData['createdby'], //authorId
         jsonData['createdat'], //createdAt
         jsonData['updatedat'], //updatedAt
