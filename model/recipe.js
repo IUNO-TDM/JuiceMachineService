@@ -4,7 +4,7 @@
 
 var Component = require('./component');
 
-function Recipe (id, title, description, licenseFee, thumbnail, imageRef, authorId, createdAt, updatedAt, rating, retailPrice, productCode, program, components) {
+function Recipe (id, title, description, licenseFee, thumbnail, imageRef, backgroundColor, authorId, createdAt, updatedAt, rating, retailPrice, productCode, program, components) {
 
 
     this.id = id;
@@ -13,6 +13,7 @@ function Recipe (id, title, description, licenseFee, thumbnail, imageRef, author
     this.licensefee = licenseFee;
     this.thumbnail = thumbnail;
     this.imageRef = imageRef;
+    this.backgroundColor = backgroundColor;
     this.authorId = authorId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -46,6 +47,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = function(jsonData) {
         jsonData['licensefee'], //licencefee
         jsonData['technologydatathumbnail'], //thumbnail
         null, //imageRef TODO: Remove imageRef from model as it is not needed. The image url always is /{id}/image
+        jsonData['backgroundcolor'],
         jsonData['createdby'], //authorId
         jsonData['createdat'], //createdAt
         jsonData['updatedat'], //updatedAt
