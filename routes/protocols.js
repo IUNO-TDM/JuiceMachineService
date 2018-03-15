@@ -11,21 +11,21 @@ router.post('/:clientId', validate({
     query: validation_schema.Empty,
     body: validation_schema.Protocol
 }), function (req, res, next) {
-    let clientId = req.param('clientId');
+    let clientId = req.params['clientId'];
     let protocol = req.body;
-    console.debug("Protocol "+ protocol.eventType+ " received from " +clientId);
+    console.log("Protocol " + protocol.eventType + " received from " + clientId);
     marketplaceCore.createProtocolForClientId(req.token.accessToken, clientId, protocol, function (err, jsonData) {
         if (err) {
             return next(err);
         }
-        if(jsonData){
+        if (jsonData) {
             res.status(201);
             res.json(jsonData);
-        }else{
+        } else {
             res.sendStatus(201);
         }
     })
-    
+
 });
 
 module.exports = router;
