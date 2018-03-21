@@ -30,7 +30,7 @@ app.use('/offers', require('./routes/offers'));
 app.use('/users', require('./routes/users'));
 app.use('/components', require('./routes/components'));
 app.use('/cmdongle', require('./routes/cmdongle'));
-
+app.use('/protocols', require('./routes/protocols'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

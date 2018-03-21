@@ -341,4 +341,31 @@ self.confirmLicenseUpdate = function(hsmId, context, accessToken, callback) {
     });
 };
 
+self.createProtocolForClientId = function (accessToken, clientId, protocol, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/protocols/' + clientId,
+        {
+
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+    options.body = protocol;
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        callback(err, jsonData);
+    });
+};
+
 module.exports = self;
