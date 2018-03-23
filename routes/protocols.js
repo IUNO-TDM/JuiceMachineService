@@ -13,7 +13,9 @@ router.post('/:clientId', validate({
 }), function (req, res, next) {
     let clientId = req.params['clientId'];
     let protocol = req.body;
-    console.log("Protocol " + protocol.eventType + " received from " + clientId);
+
+    logger.info("Protocol " + protocol.eventType + " received from " + clientId);
+
     marketplaceCore.createProtocolForClientId(req.token.accessToken, clientId, protocol, function (err, jsonData) {
         if (err) {
             return next(err);
