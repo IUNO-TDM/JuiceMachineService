@@ -11,23 +11,55 @@
 const logger = require('../global/logger');
 const authentication = require('../services/authentication_service');
 const license_service = require('../services/license_service');
+const protocol_service = require('../services/protocol_service');
+var clientDict = {};
+
 
 function onIOLicenseConnect(socket) {
     logger.debug('Client for License Updates connected.' + socket.id);
 
-    socket.on('room', function(hsmId) {
+    socket.on('room', function (hsmId) {
         logger.debug('Client joining license room: ' + hsmId);
         socket.join(hsmId);
         license_service.registerUpdates(hsmId)
     });
-    socket.on('leave', function(hsmId) {
+    socket.on('leave', function (hsmId) {
         logger.debug('Client joining license room: ' + hsmId);
         socket.leave(hsmId);
         license_service.unregisterUpdates(hsmId)
     });
 
+    socket.on('clientId', function (clientId) {
+        clientDict[socket.id] = clientId;
+        const protocol = {
+            eventType: 'connection',
+            timestamp: new Date().toISOString(),
+            payload: {
+                connected: true
+            }
+        };
+        protocol_service.createProtocolForClientId(clientId, protocol, function (err, jsondata) {
+            //do nothing...
+        })
+    });
+
     socket.on('disconnect', function () {
         logger.debug('Socket disconnected: ' + socket.id);
+        if (clientDict[socket.id]) {
+            //tell this the marketplace core via protocols route
+            const clientId = clientDict[socket.id]
+            delete clientDict[socket.id];
+            const protocol = {
+                eventType: 'connection',
+                timestamp: new Date().toISOString(),
+                payload: {
+                    connected: false
+                }
+            };
+            protocol_service.createProtocolForClientId(clientId, protocol, function (err, jsondata) {
+                //do nothing...
+            })
+        }
     });
 }
 
@@ -41,8 +73,8 @@ module.exports = function (io) {
 
 };
 
-function registerLicenseEvents(namespace){
-        license_service.on('updateAvailable', function(offerId,hsmId){
-        namespace.to(hsmId).emit('updateAvailable',{hsmId: hsmId, offerId: offerId});
+function registerLicenseEvents(namespace) {
+    license_service.on('updateAvailable', function (offerId, hsmId) {
+        namespace.to(hsmId).emit('updateAvailable', {hsmId: hsmId, offerId: offerId});
     })
 }

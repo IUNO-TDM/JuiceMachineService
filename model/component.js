@@ -2,10 +2,11 @@
  * Created by beuttlerma on 28.03.17.
  */
 
-function Component (id, name, description) {
+function Component(id, name, description, displayColor) {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.color = displayColor;
 }
 
 /**
@@ -14,7 +15,7 @@ function Component (id, name, description) {
  * @returns {*}
  * @constructor
  */
-Component.prototype.CreateComponentFromJSON = function(jsonData) {
+Component.prototype.CreateComponentFromJSON = function (jsonData) {
 
     if (!jsonData) {
         return null;
@@ -23,7 +24,8 @@ Component.prototype.CreateComponentFromJSON = function(jsonData) {
     return new Component(
         jsonData['componentuuid'],
         jsonData['componentname'],
-        jsonData['componentdescription']
+        jsonData['componentdescription'],
+        jsonData['displaycolor']
     );
 };
 
