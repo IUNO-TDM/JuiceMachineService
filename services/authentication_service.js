@@ -57,11 +57,13 @@ self.oAuth = function (req, res, next) {
 };
 
 self.ws_oAuth = function (socket, next) {
+    const _socket = socket;
     try {
-        var accessToken = getBearerTokenFromHeader(socket.handshake);
+        const accessToken = getBearerTokenFromHeader(socket.handshake);
 
         authService.validateToken(accessToken, function (err, isValid, token) {
             if (isValid) {
+                _socket.token = token;
                 next();
             }
             else {
