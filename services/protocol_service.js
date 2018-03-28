@@ -37,9 +37,7 @@ self.writeProtocolForRequest = function (req) {
             method: req.method,
             query: req.query,
             params: req.params,
-            body: req.body,
-            client: req.token.client,
-            user: req.token.user
+            client: req.token.client
         });
 
     self.createProtocolForClientId(config.OAUTH_CREDENTIALS.CLIENT_ID, protocol);
