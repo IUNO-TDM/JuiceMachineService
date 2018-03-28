@@ -12,11 +12,20 @@ const logger = require('../global/logger');
 const authentication = require('../services/authentication_service');
 const license_service = require('../services/license_service');
 const protocol_service = require('../services/protocol_service');
-var clientDict = {};
 
 
 function onIOLicenseConnect(socket) {
     logger.debug('Client for License Updates connected.' + socket.id);
+
+    const protocol = {
+        eventType: 'connection',
+        timestamp: new Date().toISOString(),
+        payload: {
+            connected: true
+        }
+    };
+    protocol_service.createProtocolForClientId(socket.token.client.id, protocol);
+
 
     socket.on('room', function (hsmId) {
         logger.debug('Client joining license room: ' + hsmId);
@@ -28,36 +37,16 @@ function onIOLicenseConnect(socket) {
         socket.leave(hsmId);
         license_service.unregisterUpdates(hsmId)
     });
-
-    socket.on('clientId', function (clientId) {
-        clientDict[socket.id] = clientId;
+    socket.on('disconnect', function () {
+        logger.debug('Socket disconnected: ' + socket.id);
         const protocol = {
             eventType: 'connection',
             timestamp: new Date().toISOString(),
             payload: {
-                connected: true
+                connected: false
             }
         };
-        protocol_service.createProtocolForClientId(clientId, protocol);
-    });
-
-    socket.on('disconnect', function () {
-        logger.debug('Socket disconnected: ' + socket.id);
-        if (clientDict[socket.id]) {
-            //tell this the marketplace core via protocols route
-            const clientId = clientDict[socket.id]
-            delete clientDict[socket.id];
-            const protocol = {
-                eventType: 'connection',
-                timestamp: new Date().toISOString(),
-                payload: {
-                    connected: false
-                }
-            };
-            protocol_service.createProtocolForClientId(clientId, protocol, function (err, jsondata) {
-                //do nothing...
-            })
-        }
+        protocol_service.createProtocolForClientId(socket.token.client.id, protocol);
     });
 }
 
