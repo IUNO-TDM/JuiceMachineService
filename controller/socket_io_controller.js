@@ -38,9 +38,7 @@ function onIOLicenseConnect(socket) {
                 connected: true
             }
         };
-        protocol_service.createProtocolForClientId(clientId, protocol, function (err, jsondata) {
-            //do nothing...
-        })
+        protocol_service.createProtocolForClientId(clientId, protocol);
     });
 
     socket.on('disconnect', function () {

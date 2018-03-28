@@ -8,24 +8,41 @@ const logger = require('../global/logger');
 const config = require('../config/config_loader');
 const authServer = require('../adapter/auth_service_adapter');
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
-var ProtocolService = function () {
-    const self = this;
-}
 
-const protocol_service = new ProtocolService();
+const Protocol = require('../model/protocol');
 
 
-protocol_service.createProtocolForClientId = function(clientId,protocol, callback){
-    authServer.getClientAccessToken(function(err, token){
-        if(err){
-            console.error("Error when creating protocol at MarketplaceCore: " + err);
-            callback(err, null);
-        }else{
-            marketplaceCore.createProtocolForClientId(token.accessToken,clientId,protocol,function(err,jsondata){
-                callback(err,jsondata);
+const self = {};
+
+self.createProtocolForClientId = function (clientId, protocol) {
+    authServer.getClientAccessToken(function (err, token) {
+        if (err) {
+            return logger.warn('[protocol_service] could not create protocol. Error when requesting access token')
+        } else {
+            marketplaceCore.createProtocolForClientId(token['accessToken'], clientId, protocol, function (err, jsondata) {
+                if (err) {
+                    return logger.warn('[protocols_service] could not create protocol');
+                }
             })
         }
     })
-}
+};
 
-module.exports = protocol_service;
+self.writeProtocolForRequest = function (req) {
+
+    const protocol = new Protocol(
+        req.baseUrl,
+        new Date().toISOString(),
+        {
+            method: req.method,
+            query: req.query,
+            params: req.params,
+            body: req.body,
+            client: req.token.client,
+            user: req.token.user
+        });
+
+    self.createProtocolForClientId(config.OAUTH_CREDENTIALS.CLIENT_ID, protocol);
+};
+
+module.exports = self;

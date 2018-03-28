@@ -6,6 +6,7 @@ const router = express.Router();
 const logger = require('../global/logger');
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 const helper = require('../services/helper_service');
+const protocolsService = require('../services/protocol_service');
 
 const {Validator, ValidationError} = require('express-json-validator-middleware');
 const validator = new Validator({allErrors: true});
@@ -17,6 +18,8 @@ router.get('/', validate({
     query: validation_schema.Recipe_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
+
+    protocolsService.writeProtocolForRequest(req);
 
     logger.debug(req.query);
 
