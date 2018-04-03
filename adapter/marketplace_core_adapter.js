@@ -85,9 +85,7 @@ self.getRecipeForId = function (accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId,
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -118,9 +116,7 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
-        {
-
-        }
+        {}
     );
 
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -154,9 +150,7 @@ self.getImageForRecipe = function (accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/image',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
     options.encoding = null;
@@ -187,9 +181,7 @@ self.createOfferForRequest = function (accessToken, offerRequest, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/offers',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -240,9 +232,7 @@ self.getAllComponents = function (accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -277,9 +267,7 @@ self.getLicenseUpdate = function (hsmId, context, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/cmdongle/' + hsmId + '/update',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -302,7 +290,7 @@ self.getLicenseUpdate = function (hsmId, context, accessToken, callback) {
 
 };
 
-self.confirmLicenseUpdate = function(hsmId, context, accessToken, callback) {
+self.confirmLicenseUpdate = function (hsmId, context, accessToken, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[marketplace_core_adapter] Callback not registered');
     }
@@ -317,9 +305,7 @@ self.confirmLicenseUpdate = function(hsmId, context, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/cmdongle/' + hsmId + '/update/confirm',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -355,9 +341,7 @@ self.createProtocolForClientId = function (accessToken, clientId, protocol, call
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/protocols/' + clientId,
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
     options.body = protocol;
@@ -365,6 +349,33 @@ self.createProtocolForClientId = function (accessToken, clientId, protocol, call
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
         callback(err, jsonData);
+    });
+};
+
+self.requestForLicenseUpdate = function (accessToken, offerId, hsmId, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    const options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        `/offers/${offerId}/request_license_update`,
+        {}
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+    options.body = {
+        hsmId: hsmId
+    };
+
+    request(options, (e, r, jsonData) => {
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
+        callback(err);
     });
 };
 
