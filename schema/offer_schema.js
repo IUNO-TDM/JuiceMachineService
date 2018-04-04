@@ -18,7 +18,7 @@ self.OfferRequest_Body = {
                     },
                     amount: {
                         type: 'integer',
-                        minimum : 1,
+                        minimum: 1,
                         maximum: 100
                     }
                 },
@@ -43,5 +43,16 @@ self.Empty = {
     additionalProperties: false
 };
 
+self.RequestLicenseUpdateBody = {
+    type: 'object',
+    properties: {
+        hsmId: {
+            type: 'string',
+            pattern: '[3-9]-[0-9]{7}$'
+        }
+    },
+    required: ['hsmId'],
+    additionalProperties: false
+};
 
 module.exports = self;
