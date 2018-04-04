@@ -40,7 +40,7 @@ self.writeProtocolForRequest = function (req) {
             client: req.token.client
         });
 
-    self.createProtocolForClientId(config.OAUTH_CREDENTIALS.CLIENT_ID, protocol);
+    self.createProtocolForClientId(req.token.client.id, protocol);
 };
 
 module.exports = self;
