@@ -43,7 +43,7 @@ license_service.socket = io.connect('http://' + config.HOST_SETTINGS.MARKETPLACE
 });
 
 license_service.socket.on('connect', function () {
-    logger.debug("[license_service] connected to license SocketIO at Marketplace");
+    logger.info("[license_service] connected to license SocketIO at Marketplace");
 
     // register rooms on reconnect
     Object.keys(license_service.registeredRooms).forEach(function (room) {
@@ -56,29 +56,29 @@ license_service.socket.on('connect', function () {
 });
 
 license_service.socket.on('error', function (error) {
-    logger.debug("[license_client] Error: " + error);
+    logger.debug("[license_service] Error: " + error);
 
     license_service.refreshTokenAndReconnect();
 });
 
 license_service.socket.on('connect_failed', function (error) {
-    logger.debug("[license_client] Connection Failed: " + error);
+    logger.debug("[license_service] Connection Failed: " + error);
 });
 
 license_service.socket.on('connect_error', function (error) {
-    logger.debug("[license_client] Connection Error: " + error);
+    logger.warn("[license_service] Connection Error: " + error);
 });
 
 license_service.socket.on('reconnect_error', function (error) {
-    logger.debug("[license_client] Re-Connection Error: " + error);
+    logger.debug("[license_service] Re-Connection Error: " + error);
 });
 
 license_service.socket.on('reconnect_attempt', function (number) {
-    logger.debug("[license_client] Re-Connection attempt: " + number);
+    logger.debug("[license_service] Re-Connection attempt: " + number);
 });
 
 license_service.socket.on('disconnect', function () {
-    logger.debug("disconnected from license SocketIO at Marketplace");
+    logger.info("[license_service] disconnected from license SocketIO at Marketplace");
 });
 
 /**
