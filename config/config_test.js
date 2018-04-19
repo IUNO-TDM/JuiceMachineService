@@ -1,16 +1,14 @@
-
-var self = {
-};
+var self = {};
 
 // ---- CONFIGURATION EXPORT ----
 self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
-        PROTOCOL:'http',
+        PROTOCOL: 'http',
         HOST: 'test-tdm.fritz.box',
         PORT: 3002
     },
     OAUTH_SERVER: {
-        PROTOCOL:'http',
+        PROTOCOL: 'http',
         HOST: 'test-tdm.fritz.box',
         PORT: 3006
     }

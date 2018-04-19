@@ -3,7 +3,7 @@
  */
 
 
-function Program (id, lines) {
+function Program(id, lines) {
     this.id = id;
     this.lines = lines
 }
