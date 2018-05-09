@@ -3,7 +3,7 @@
  */
 
 
-function Transfer (address, coin) {
+function Transfer(address, coin) {
     this.address = address;
     this.coin = coin;
 }

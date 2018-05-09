@@ -4,6 +4,7 @@
 
 var Invoice = require('./invoice');
 var Transfer = require('./transfer');
+
 function Offer(id, invoice) {
     this.id = id;
     this.invoice = invoice;

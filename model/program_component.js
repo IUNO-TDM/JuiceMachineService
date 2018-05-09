@@ -3,7 +3,7 @@
  */
 
 
-function ProgramComponent (component, amount) {
+function ProgramComponent(component, amount) {
     this.component = component;
     this.amount = amount;
 }

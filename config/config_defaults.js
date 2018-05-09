@@ -3,9 +3,7 @@
  */
 
 
-var self = {
-};
-
+var self = {};
 
 
 // ---- CONFIGURATION EXPORT ----
@@ -13,12 +11,12 @@ var self = {
 self.LOG_LEVEL = 'debug';
 self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
-        PROTOCOL:'http',
+        PROTOCOL: 'http',
         HOST: 'localhost',
         PORT: 3002
     },
     OAUTH_SERVER: {
-        PROTOCOL:'http',
+        PROTOCOL: 'http',
         HOST: 'localhost',
         PORT: 3006
     }
@@ -27,7 +25,6 @@ self.OAUTH_CREDENTIALS = {
     CLIENT_ID: '',
     CLIENT_SECRET: ''
 };
-
 
 
 module.exports = self;

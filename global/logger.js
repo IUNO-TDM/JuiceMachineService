@@ -126,7 +126,7 @@ logger.trace = function (msg) {
 logger.logRequestAndResponse = function (err, options, res, data) {
 
     var loggerOutput = {};
-    var e  = null;
+    var e = null;
 
     if (options) {
         loggerOutput.options = options;
@@ -145,7 +145,7 @@ logger.logRequestAndResponse = function (err, options, res, data) {
         loggerOutput.err = err;
         logger.crit(loggerOutput);
         e = new Error(JSON.stringify(loggerOutput, null, 4));
-        if(err.statusCode) {
+        if (err.statusCode) {
             e.statusCode = res.statusCode;
         }
     }
