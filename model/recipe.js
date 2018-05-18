@@ -4,7 +4,7 @@
 
 const Component = require('./component');
 
-function Recipe(id, title, description, licenseFee, backgroundColor, authorId, productCode, program, components) {
+function Recipe(id, title, description, licenseFee, backgroundColor, authorId, productCode, components) {
 
     this.id = id;
     this.title = title;
@@ -13,7 +13,6 @@ function Recipe(id, title, description, licenseFee, backgroundColor, authorId, p
     this.backgroundColor = backgroundColor;
     this.authorId = authorId;
     this.productCode = productCode;
-    this.program = program;
     this.components = components;
 
 }
@@ -30,7 +29,7 @@ Recipe.prototype.CreateRecipeFromCoreJSON = Recipe.CreateRecipeFromCoreJSON = fu
     }
     const component = [];
     for (let key in jsonData['componentlist']) {
-        component.push(new Component().CreateComponentFromJSON(jsonData['componentlist'][key]));
+        component.push(Component.CreateComponentFromJSON(jsonData['componentlist'][key]));
     }
 
     return new Recipe(
@@ -41,7 +40,6 @@ Recipe.prototype.CreateRecipeFromCoreJSON = Recipe.CreateRecipeFromCoreJSON = fu
         jsonData['backgroundcolor'],
         jsonData['createdby'], //authorId
         jsonData['productcode'],
-        jsonData['technologydata'],//program
         component
     )
 };

@@ -101,6 +101,35 @@ self.getRecipeForId = function (accessToken, recipeId, callback) {
     });
 };
 
+self.getRecipeProgramForId = function (accessToken, recipeId, offerId, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        `/technologydata/${recipeId}/content`,
+        {
+            offerId: offerId
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, program) {
+
+        const err = logger.logRequestAndResponse(e, options, r, program);
+
+        callback(err, program);
+    });
+};
+
+
 self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
 
