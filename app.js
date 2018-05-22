@@ -37,7 +37,7 @@ app.use('/cmdongle', require('./routes/cmdongle'));
 app.use('/protocols', require('./routes/protocols'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -47,7 +47,7 @@ app.use(function (req, res, next) {
 // Custom validation error
 app.use(function (err, req, res, next) {
 
-    var responseData;
+    let responseData;
 
     if (err.name === 'JsonSchemaValidation') {
         // Log the error however you please
@@ -91,7 +91,7 @@ app.use(function (err, req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         console.error(err.stack);
-        res.status(err.statusCode || 500);
+        res.status(err.status || 500);
         res.json({
             message: err.message,
             error: err
@@ -101,8 +101,8 @@ if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         console.error(err);
         // Send error details to the client only when the status is 4XX
-        if (err.statusCode && err.statusCode >= 400 && err.statusCode < 500) {
-            res.sendStatus(err.statusCode);
+        if (err.status && err.status >= 400 && err.status < 500) {
+            res.sendStatus(err.status);
         }
         else {
             res.status(500);
