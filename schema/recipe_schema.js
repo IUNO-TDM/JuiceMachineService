@@ -10,6 +10,18 @@ self.Empty = {
     additionalProperties: false
 };
 
+self.GetContent_Query = {
+    type: 'object',
+    properties: {
+        offerId: {
+            type: 'string',
+            format: 'uuid'
+        }
+    },
+    required: ['offerId'],
+    additionalProperties: false
+};
+
 self.Recipe_Query = {
     type: 'object',
     properties: {
@@ -25,5 +37,6 @@ self.Recipe_Query = {
     required: ['components'],
     additionalProperties: false
 };
+
 
 module.exports = self;

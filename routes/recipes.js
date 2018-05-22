@@ -67,6 +67,22 @@ router.get('/:id', validate({
     });
 });
 
+router.get('/:id/program', validate({
+    query: validation_schema.GetContent_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    marketplaceCore.getRecipeProgramForId(req.token['accessToken'], req.params['id'], req.query['offerId'], (err, program) => {
+        if (err) {
+            if (err.statusCode >= 500) {
+                return next(err);
+            }
+            return res.sendStatus(err.statusCode);
+        }
+
+        res.json(program);
+    });
+});
+
 router.get('/:id/image', validate({
     query: validation_schema.Empty,
     body: validation_schema.Empty

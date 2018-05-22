@@ -2,8 +2,8 @@
  * Created by beuttlerma on 01.03.17.
  */
 
-var Invoice = require('./invoice');
-var Transfer = require('./transfer');
+const Invoice = require('./invoice');
+const Transfer = require('./transfer');
 
 function Offer(id, invoice) {
     this.id = id;
@@ -16,14 +16,14 @@ function Offer(id, invoice) {
  * @returns {*}
  * @constructor
  */
-Offer.prototype.CreateFromCoreJSON = function (jsonData) {
+Offer.prototype.CreateFromCoreJSON = Offer.CreateFromCoreJSON = function (jsonData) {
     if (!jsonData) {
         return null;
     }
 
-    var transfers = [];
-    for (var key in jsonData.invoice.transfers) {
-        var transfer = jsonData.invoice.transfers[key];
+    const transfers = [];
+    for (let key in jsonData.invoice.transfers) {
+        const transfer = jsonData.invoice.transfers[key];
         transfers.push(new Transfer(transfer.address, transfer.coin));
     }
 
