@@ -16,9 +16,14 @@ app.use(logger('dev'));
 // Accept JSON only
 app.use('/', contentTypeValidation);
 
-app.use(bodyParser.json({
+app.use('/cmdongle', bodyParser.json({
     limit: '50mb'
 }));
+
+app.use('/', bodyParser.json({
+    limit: '10kb'
+}));
+
 app.use(queryParser());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -37,7 +42,7 @@ app.use('/cmdongle', require('./routes/cmdongle'));
 app.use('/protocols', require('./routes/protocols'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -47,7 +52,7 @@ app.use(function (req, res, next) {
 // Custom validation error
 app.use(function (err, req, res, next) {
 
-    var responseData;
+    let responseData;
 
     if (err.name === 'JsonSchemaValidation') {
         // Log the error however you please
@@ -99,14 +104,10 @@ if (app.get('env') === 'development') {
     });
 } else {
     app.use(function (err, req, res, next) {
-        console.error(err.stack);
+        console.error(err);
         // Send error details to the client only when the status is 4XX
         if (err.status && err.status >= 400 && err.status < 500) {
-            res.status(err.status);
-            res.json({
-                message: err.message,
-                error: err
-            });
+            res.sendStatus(err.status);
         }
         else {
             res.status(500);
