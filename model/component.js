@@ -15,7 +15,7 @@ function Component(id, name, description, displayColor) {
  * @returns {*}
  * @constructor
  */
-Component.prototype.CreateComponentFromJSON = function (jsonData) {
+Component.prototype.CreateComponentFromJSON = Component.CreateComponentFromJSON = function (jsonData) {
 
     if (!jsonData) {
         return null;

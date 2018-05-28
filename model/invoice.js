@@ -7,6 +7,4 @@ function Invoice(expiration, transfers) {
     this.transfers = transfers;
 }
 
-//TODO: Add total amount
-
 module.exports = Invoice;

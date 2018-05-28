@@ -2,12 +2,10 @@
  * Created by beuttlerma on 21.02.17.
  */
 
-function User(id, username, firstname, lastname, email) {
+function User(id, firstname, lastname) {
     this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
-    this.email = email;
-    this.username = username;
 }
 
 /**
@@ -24,10 +22,8 @@ User.prototype.CreateFromCoreJSON = function (jsonData) {
 
     return new User(
         jsonData['id'],
-        jsonData['username'],
         jsonData['firstname'],
-        jsonData['lastname'],
-        jsonData['useremail']
+        jsonData['lastname']
     )
 };
 

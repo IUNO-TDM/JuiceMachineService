@@ -2,19 +2,18 @@
  * Created by beuttlerma on 07.02.17.
  */
 
-var self = {};
+const self = {};
 
-var logger = require('../global/logger');
-var CONFIG = require('../config/config_loader');
+const logger = require('../global/logger');
+const CONFIG = require('../config/config_loader');
 
-var Recipe = require('../model/recipe');
-var User = require('../model/user');
-var Offer = require('../model/offer');
-var Component = require('../model/component');
+const Recipe = require('../model/recipe');
+const Offer = require('../model/offer');
+const Component = require('../model/component');
 
-var helper = require('../services/helper_service');
+const helper = require('../services/helper_service');
 
-var request = require('request');
+const request = require('request');
 
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
@@ -40,7 +39,7 @@ self.getAllRecipesForConfiguration = function (accessToken, configuration, callb
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -55,14 +54,14 @@ self.getAllRecipesForConfiguration = function (accessToken, configuration, callb
 
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var recipes = [];
+        const recipes = [];
 
         if (jsonData && helper.isArray(jsonData)) {
 
             jsonData.forEach(function (entry) {
-                recipes.push(new Recipe().CreateRecipeFromCoreJSON(entry));
+                recipes.push(Recipe.CreateRecipeFromCoreJSON(entry));
             });
         }
 
@@ -79,7 +78,7 @@ self.getRecipeForId = function (accessToken, recipeId, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -91,16 +90,45 @@ self.getRecipeForId = function (accessToken, recipeId, callback) {
 
     request(options, function (e, r, jsonData) {
 
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var recipe;
+        let recipe;
         if (helper.isObject(jsonData)) {
-            recipe = new Recipe().CreateRecipeFromCoreJSON(jsonData);
+            recipe = Recipe.CreateRecipeFromCoreJSON(jsonData);
         }
 
         callback(err, recipe);
     });
 };
+
+self.getRecipeProgramForId = function (accessToken, recipeId, offerId, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        `/technologydata/${recipeId}/content`,
+        {
+            offerId: offerId
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, program) {
+
+        const err = logger.logRequestAndResponse(e, options, r, program);
+
+        callback(err, program);
+    });
+};
+
 
 self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
     if (typeof(callback) !== 'function') {
@@ -110,7 +138,7 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -122,13 +150,13 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
     options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var components = [];
+        const components = [];
 
         if (helper.isArray(jsonData)) {
             jsonData.forEach(function (entry) {
-                components.push(new Component().CreateComponentFromJSON(entry));
+                components.push(Component.CreateComponentFromJSON(entry));
             });
         }
 
@@ -144,7 +172,7 @@ self.getImageForRecipe = function (accessToken, recipeId, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -156,7 +184,7 @@ self.getImageForRecipe = function (accessToken, recipeId, callback) {
     options.encoding = null;
 
     request(options, function (e, r, data) {
-        var err = logger.logRequestAndResponse(e, options, r, data);
+        const err = logger.logRequestAndResponse(e, options, r, data);
 
         callback(err, {
             imageBuffer: data,
@@ -175,7 +203,7 @@ self.createOfferForRequest = function (accessToken, offerRequest, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'POST',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -185,7 +213,7 @@ self.createOfferForRequest = function (accessToken, offerRequest, callback) {
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
-    var items = [];
+    const items = [];
     offerRequest['items'].forEach(function (entry) {
         items.push({
             dataId: entry.recipeId,
@@ -199,11 +227,11 @@ self.createOfferForRequest = function (accessToken, offerRequest, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var offer;
+        let offer;
         if (!err && helper.isObject(jsonData)) {
-            offer = new Offer().CreateFromCoreJSON(jsonData);
+            offer = Offer.CreateFromCoreJSON(jsonData);
         }
 
         callback(err, offer);
@@ -226,7 +254,7 @@ self.getAllComponents = function (accessToken, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -237,12 +265,12 @@ self.getAllComponents = function (accessToken, callback) {
     options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var components = [];
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const components = [];
 
         if (helper.isArray(jsonData)) {
             jsonData.forEach(function (entry) {
-                components.push(new Component().CreateComponentFromJSON(entry));
+                components.push(Component.CreateComponentFromJSON(entry));
             });
         }
 
@@ -261,7 +289,7 @@ self.getLicenseUpdate = function (hsmId, context, accessToken, callback) {
         return logger.info('[marketplace_core_adapter] missing function arguments');
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'POST',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -276,10 +304,10 @@ self.getLicenseUpdate = function (hsmId, context, accessToken, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var rau = null;
-        var isOutOfDate = false;
+        let rau = null;
+        let isOutOfDate = false;
         if (jsonData) {
             rau = jsonData['RAU'];
             isOutOfDate = jsonData['isOutOfDate']
@@ -299,7 +327,7 @@ self.confirmLicenseUpdate = function (hsmId, context, accessToken, callback) {
         return logger.info('[marketplace_core_adapter] missing function arguments');
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'POST',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -314,10 +342,10 @@ self.confirmLicenseUpdate = function (hsmId, context, accessToken, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        var rau = null;
-        var isOutOfDate = false;
+        let rau = null;
+        let isOutOfDate = false;
         if (jsonData) {
             rau = jsonData['RAU'];
             isOutOfDate = jsonData['isOutOfDate']
@@ -335,7 +363,7 @@ self.createProtocolForClientId = function (accessToken, clientId, protocol, call
         }
     }
 
-    var options = buildOptionsForRequest(
+    const options = buildOptionsForRequest(
         'POST',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
@@ -347,7 +375,7 @@ self.createProtocolForClientId = function (accessToken, clientId, protocol, call
     options.body = protocol;
 
     request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
         callback(err, jsonData);
     });
 };
