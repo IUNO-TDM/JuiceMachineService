@@ -7,10 +7,24 @@
 
 const self = {};
 
+var languageProperty = {
+    type: 'string',
+    enum: ['de', 'en']
+};
+
 self.Empty = {
     type: 'object',
     properties: {},
     additionalProperties: false
 };
+
+self.Language = {
+    type: 'object',
+    properties: {
+        lang: languageProperty
+    },
+    additionalProperties: false
+};
+
 
 module.exports = self;

@@ -19,6 +19,7 @@ router.get('/', validate({
     body: validation_schema.Empty
 }), function (req, res, next) {
 
+    const language = req.query['lang']
     protocolsService.writeProtocolForRequest(req);
 
     logger.debug(req.query);
@@ -29,7 +30,7 @@ router.get('/', validate({
         components: req.query['components']
     };
 
-    marketplaceCore.getAllRecipesForConfiguration(req.token.accessToken, searchConfig, function (err, recipes) {
+    marketplaceCore.getAllRecipesForConfiguration(language, req.token.accessToken, searchConfig, function (err, recipes) {
 
         if (err) {
             next(err);

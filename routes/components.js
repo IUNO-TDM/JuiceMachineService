@@ -13,11 +13,11 @@ const validate = validator.validate;
 const validation_schema = require('../schema/component_schema');
 
 router.get('/', validate({
-    query: validation_schema.Empty,
+    query: validation_schema.Language,
     body: validation_schema.Empty
 }), function (req, res, next) {
-
-    marketplaceCore.getAllComponents(req.token.accessToken, function (err, components) {
+    const language = req.query['lang']
+    marketplaceCore.getAllComponents(language, req.token.accessToken, function (err, components) {
 
         if (err) {
             next(err);
