@@ -4,7 +4,7 @@
 
 const self = {};
 
-var languageProperty = {
+const languageProperty = {
     type: 'string',
     enum: ['de', 'en']
 };

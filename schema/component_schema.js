@@ -7,7 +7,7 @@
 
 const self = {};
 
-var languageProperty = {
+const languageProperty = {
     type: 'string',
     enum: ['de', 'en']
 };
@@ -18,7 +18,7 @@ self.Empty = {
     additionalProperties: false
 };
 
-self.Language = {
+self.Components_Query = {
     type: 'object',
     properties: {
         lang: languageProperty
