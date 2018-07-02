@@ -4,7 +4,6 @@
 
 const express = require('express');
 const router = express.Router();
-const logger = require('../global/logger');
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 
 const {Validator, ValidationError} = require('express-json-validator-middleware');
@@ -13,11 +12,11 @@ const validate = validator.validate;
 const validation_schema = require('../schema/component_schema');
 
 router.get('/', validate({
-    query: validation_schema.Empty,
+    query: validation_schema.Components_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
-
-    marketplaceCore.getAllComponents(req.token.accessToken, function (err, components) {
+    const language = req.query['lang'];
+    marketplaceCore.getAllComponents(language, req.token.accessToken, function (err, components) {
 
         if (err) {
             next(err);
