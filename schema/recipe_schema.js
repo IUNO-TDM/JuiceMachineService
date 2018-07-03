@@ -41,7 +41,7 @@ self.Recipe_Query = {
         },
         lang: languageProperty
     },
-    required: ['components', 'lang'],
+    required: ['components'],
     additionalProperties: false
 };
 
