@@ -19,7 +19,7 @@ router.get('/', validate({
     body: validation_schema.Empty
 }), function (req, res, next) {
 
-    const language = req.query['lang']
+    const language = req.query['lang'] || 'de'
     protocolsService.writeProtocolForRequest(req);
 
     logger.debug(req.query);
