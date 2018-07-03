@@ -15,7 +15,7 @@ router.get('/', validate({
     query: validation_schema.Components_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
-    const language = req.query['lang'];
+    const language = req.query['lang'] || 'de';
     marketplaceCore.getAllComponents(language, req.token.accessToken, function (err, components) {
 
         if (err) {
