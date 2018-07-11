@@ -19,7 +19,7 @@ router.get('/', validate({
     body: validation_schema.Empty
 }), function (req, res, next) {
 
-    const language = req.query['lang'] || 'de'
+    const language = req.query['lang'] || 'de';
     protocolsService.writeProtocolForRequest(req);
 
     logger.debug(req.query);
@@ -44,7 +44,7 @@ router.get('/', validate({
 });
 
 router.get('/:id', validate({
-    query: validation_schema.Empty,
+    query: validation_schema.GetSingleRecipeQuery,
     body: validation_schema.Empty
 }), function (req, res, next) {
     marketplaceCore.getRecipeForId(req.token.accessToken, req.params['id'], function (err, recipe) {
@@ -58,7 +58,7 @@ router.get('/:id', validate({
             return;
         }
 
-        marketplaceCore.getComponentsForRecipeId(req.token.accessToken, req.params['id'], function (err, components) {
+        marketplaceCore.getComponentsForRecipeId(req.token.accessToken, req.params['id'], req.params['lang'], function (err, components) {
             if (!err && components) {
                 recipe.components = components;
             }

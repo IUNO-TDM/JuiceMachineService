@@ -131,7 +131,7 @@ self.getRecipeProgramForId = function (accessToken, recipeId, offerId, callback)
 };
 
 
-self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
+self.getComponentsForRecipeId = function (accessToken, recipeId, lang, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -145,7 +145,9 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
-        {}
+        {
+            lang: lang
+        }
     );
 
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -262,7 +264,8 @@ self.getAllComponents = function (language, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            lang: language
+            lang: language,
+            technologies: [CONFIG.TECHNOLOGY_UUID]
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
