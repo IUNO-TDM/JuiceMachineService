@@ -30,7 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 //<editor-fold desc="Recipes">
-self.getAllRecipesForConfiguration = function (accessToken, configuration, callback) {
+self.getAllRecipesForConfiguration = function (language, accessToken, configuration, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -46,7 +46,8 @@ self.getAllRecipesForConfiguration = function (accessToken, configuration, callb
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            components: configuration.components
+            components: configuration.components,
+            lang: language
         }
     );
 
@@ -130,7 +131,7 @@ self.getRecipeProgramForId = function (accessToken, recipeId, offerId, callback)
 };
 
 
-self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
+self.getComponentsForRecipeId = function (accessToken, recipeId, lang, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -144,7 +145,9 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
-        {}
+        {
+            lang: lang
+        }
     );
 
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -246,7 +249,7 @@ self.getOfferForId = function (uuid, accessToken, offerId, callback) {
 //</editor-fold>
 //<editor-fold desc="User">
 
-self.getAllComponents = function (accessToken, callback) {
+self.getAllComponents = function (language, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -260,7 +263,10 @@ self.getAllComponents = function (accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
-        {}
+        {
+            lang: language,
+            technologies: [CONFIG.TECHNOLOGY_UUID]
+        }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 

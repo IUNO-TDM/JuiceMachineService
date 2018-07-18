@@ -4,6 +4,12 @@
 
 const self = {};
 
+const languageProperty = {
+    type: 'string',
+    enum: ['de', 'en']
+};
+
+
 self.Empty = {
     type: 'object',
     properties: {},
@@ -22,6 +28,15 @@ self.GetContent_Query = {
     additionalProperties: false
 };
 
+self.GetSingleRecipeQuery  = {
+    type: 'object',
+        properties: {
+        lang: languageProperty
+    },
+    required:[],
+    additionalProperties: false
+};
+
 self.Recipe_Query = {
     type: 'object',
     properties: {
@@ -32,7 +47,8 @@ self.Recipe_Query = {
                 format: 'uuid'
             },
             additionalItems: false
-        }
+        },
+        lang: languageProperty
     },
     required: ['components'],
     additionalProperties: false
