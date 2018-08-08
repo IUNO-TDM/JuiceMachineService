@@ -47,7 +47,8 @@ self.getAllRecipesForConfiguration = function (language, accessToken, configurat
         '/technologydata',
         {
             components: configuration.components,
-            lang: language
+            lang: language,
+            technology: CONFIG.TECHNOLOGY_UUID
         }
     );
 
