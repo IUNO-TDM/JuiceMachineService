@@ -28,6 +28,15 @@ self.GetContent_Query = {
     additionalProperties: false
 };
 
+self.GetSingleRecipeQuery  = {
+    type: 'object',
+        properties: {
+        lang: languageProperty
+    },
+    required:[],
+    additionalProperties: false
+};
+
 self.Recipe_Query = {
     type: 'object',
     properties: {
