@@ -147,7 +147,8 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, lang, callback)
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
-            lang: lang
+            lang: lang,
+            technology: CONFIG.TECHNOLOGY_UUID
         }
     );
 
