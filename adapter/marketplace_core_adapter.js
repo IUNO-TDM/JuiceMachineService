@@ -47,7 +47,8 @@ self.getAllRecipesForConfiguration = function (language, accessToken, configurat
         '/technologydata',
         {
             components: configuration.components,
-            lang: language
+            lang: language,
+            technology: CONFIG.TECHNOLOGY_UUID
         }
     );
 
@@ -146,7 +147,8 @@ self.getComponentsForRecipeId = function (accessToken, recipeId, lang, callback)
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeId + '/components',
         {
-            lang: lang
+            lang: lang,
+            technology: CONFIG.TECHNOLOGY_UUID
         }
     );
 
