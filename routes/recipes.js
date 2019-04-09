@@ -57,8 +57,9 @@ router.get('/:id', validate({
             res.sendStatus(404);
             return;
         }
+        const language = req.query['lang'] || 'de';
 
-        marketplaceCore.getComponentsForRecipeId(req.token.accessToken, req.params['id'], req.query['lang'], function (err, components) {
+        marketplaceCore.getComponentsForRecipeId(req.token.accessToken, req.params['id'], language, function (err, components) {
             if (!err && components) {
                 recipe.components = components;
             }
